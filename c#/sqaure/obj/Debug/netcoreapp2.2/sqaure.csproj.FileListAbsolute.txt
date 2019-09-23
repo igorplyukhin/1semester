@@ -1,0 +1,4 @@
+C:\Users\Igor\Desktop\VS Code\sqaure\obj\Debug\netcoreapp2.2\sqaure.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\VS Code\sqaure\obj\Debug\netcoreapp2.2\sqaure.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\VS Code\sqaure\obj\Debug\netcoreapp2.2\sqaure.AssemblyInfoInputs.cache
+C:\Users\Igor\Desktop\VS Code\sqaure\obj\Debug\netcoreapp2.2\sqaure.AssemblyInfo.cs

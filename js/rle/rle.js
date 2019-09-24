@@ -64,26 +64,49 @@ function EscDecode(inf, outf) {
 
 function JumpCode(inf, outf) {
     function Code() {
-        
+        if (symbCount > 2) {
+            while (difSymbSeq.length > lengthLim - 1) {
+                encodedStr += String.fromCharCode(255) + difSymbSeq.substr(0, lengthLim);
+                difSymbSeq = difSymbSeq.substring(lengthLim);
+            }
+            if (difSymbSeq.length > 0) {
+                encodedStr += String.fromCharCode(difSymbSeq.length + lengthLim) + difSymbSeq;
+                difSymbSeq = "";
+            }             
+            while (symbCount > lengthLim - 1) {
+                encodedStr += String.fromCharCode(lengthLim - 1) + symb;
+                symbCount -= lengthLim - 1;
+            }
+            encodedStr += String.fromCharCode(symbCount) + symb;
+        }
+        else {
+            while (symbCount > 0) {
+                difSymbSeq += symb;
+                symbCount--;
+            }
+        }
     }
-            
-    const lengthLimit = 128; //
+
+    const lengthLim = 128; //
     let s = fs.readFileSync(inf, "utf8");
     let encodedStr = new String;    //Закодированная строка
-    let difSymbolsSeq = new String; //Последовательность не повторяюшихся символов
-    let symbol = s[0];  //Текущий символ
-    let symbolsCount = 1;   //Количество идущих подряд символов
-    for (i = 1; i < s.length; i++) {
+    let difSymbSeq = new String; //Последовательность не повторяюшихся символов
+    let symb = s[0];  //Текущий символ
+    let symbCount = 1;   //Количество идущих подряд символов
+    for (let i = 1; i < s.length; i++) {
         if (s[i] == s[i - 1]) {
-            symbolsCount++;
+            symbCount++;
         }
         else {
             Code();
-            symbol = s[i];
-            symbolsCount = 1;
+            symb = s[i];
+            symbCount = 1;
         }
     }
     Code();
+    if (difSymbSeq.length > 0) {
+        encodedStr += String.fromCharCode(difSymbSeq.length + lengthLim) + difSymbSeq;
+    }
     fs.writeFileSync(outf, encodedStr);
 }
 
@@ -92,17 +115,17 @@ function JumpDecode(inf, outf) {
     let symbolsCount = 0;
     let decodedString = new String;
     for (let i = 0; i < s.length; i++) {
-        if (s[i].charCodeAt(0) < 129){
+        if (s[i].charCodeAt(0) < 128) {
             symbolsCount = s[i].charCodeAt(0);
-            while (symbolsCount > 0){
-                decodedString += s[i+1]
-                symbolsCount --;
+            while (symbolsCount > 0) {
+                decodedString += s[i + 1]
+                symbolsCount--;
             }
             i++;
         }
         else {
             symbolsCount = s[i].charCodeAt(0) - 128;
-            decodedString += s.substr(s[i], symbolsCount);
+            decodedString += s.substr(i + 1, symbolsCount);
             i += symbolsCount;
         }
     }

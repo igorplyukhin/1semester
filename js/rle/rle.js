@@ -87,7 +87,7 @@ function JumpCode(inf, outf) {
         }
     }
 
-    const lengthLim = 128; //
+    const lengthLim = 128; 
     let s = fs.readFileSync(inf, "utf8");
     let encodedStr = new String;    //Закодированная строка
     let difSymbSeq = new String; //Последовательность не повторяюшихся символов

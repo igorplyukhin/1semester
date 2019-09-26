@@ -1,0 +1,13 @@
+C:\Users\Igor\Desktop\repos\c#\textanalysis\bin\Debug\HarryPotterText.txt
+C:\Users\Igor\Desktop\repos\c#\textanalysis\bin\Debug\TextAnalysis.exe.config
+C:\Users\Igor\Desktop\repos\c#\textanalysis\bin\Debug\TextAnalysis.exe
+C:\Users\Igor\Desktop\repos\c#\textanalysis\bin\Debug\TextAnalysis.pdb
+C:\Users\Igor\Desktop\repos\c#\textanalysis\bin\Debug\nunit.framework.dll
+C:\Users\Igor\Desktop\repos\c#\textanalysis\bin\Debug\nunitlite.dll
+C:\Users\Igor\Desktop\repos\c#\textanalysis\obj\Debug\TextAnalysis.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c#\textanalysis\obj\Debug\TextAnalysis.Properties.Resources.resources
+C:\Users\Igor\Desktop\repos\c#\textanalysis\obj\Debug\TextAnalysis.csproj.GenerateResource.cache
+C:\Users\Igor\Desktop\repos\c#\textanalysis\obj\Debug\TextAnalysis.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c#\textanalysis\obj\Debug\TextAnalysis.csproj.CopyComplete
+C:\Users\Igor\Desktop\repos\c#\textanalysis\obj\Debug\TextAnalysis.exe
+C:\Users\Igor\Desktop\repos\c#\textanalysis\obj\Debug\TextAnalysis.pdb

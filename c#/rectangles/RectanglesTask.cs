@@ -17,35 +17,33 @@ namespace Rectangles
         {
             if (AreIntersected(r1, r2))
             {
-                var xIntersection = SearchIntersection(r1.Left, r1.Right, r2.Left, r2.Right);
-                var yIntersection = SearchIntersection(r1.Top, r1.Bottom, r2.Top, r2.Bottom);
+                var left = Math.Max(r1.Left, r2.Left);
+                var right = Math.Min(r1.Right, r2.Right);
+                var top = Math.Max(r1.Top, r2.Top);
+                var bottom = Math.Min(r1.Bottom, r2.Bottom);
+                var xIntersection = Math.Max(right - left, 0);
+                var yIntersection = Math.Max(bottom - top, 0);
                 return xIntersection * yIntersection;
             }
             return 0;
         }
-        static int SearchIntersection(int aLeft, int aRight, int bLeft, int bRight)
-        {
-            var left = Math.Max(aLeft, bLeft);
-            var right = Math.Min(aRight, bRight);
-            return Math.Max(right - left, 0);
-        }
 
         public static int IndexOfInnerRectangle(Rectangle r1, Rectangle r2)
         {
-            var s1 = r1.Width * r1.Height;
-            var s2 = r2.Width * r2.Height;
+            var firstRectSquare = r1.Width * r1.Height;
+            var secondRectSquare = r2.Width * r2.Height;
             if (IntersectionSquare(r1, r2) != 0)
             {
-                if (s2 == IntersectionSquare(r1, r2) && s1 == IntersectionSquare(r1, r2))
+                if (secondRectSquare == IntersectionSquare(r1, r2) && firstRectSquare == IntersectionSquare(r1, r2))
                     return 1;
-                if (IntersectionSquare(r1, r2) == s1)
+                if (IntersectionSquare(r1, r2) == firstRectSquare)
                     return 0;
-                if (IntersectionSquare(r1, r2) == s2)
+                if (IntersectionSquare(r1, r2) == secondRectSquare)
                     return 1;
             }
-            if (IsZeroSqaureCase(r1, s1, r2, s2))
+            if (IsZeroSqaureCase(r1, firstRectSquare, r2, secondRectSquare))
                 return 0;
-            if (IsZeroSqaureCase(r2, s2, r1, s1))
+            if (IsZeroSqaureCase(r2, secondRectSquare, r1, firstRectSquare))
                 return 1;
             return -1;
         }

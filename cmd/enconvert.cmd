@@ -11,7 +11,7 @@ if "%1"=="" (
 )
 set directory=%1
 set tmpname="tmp"
-if exist "%~d0\%~p0\%tmpname%.txt" (  ::~d0 current disk ~p0 ctalog without disk and executing file
+if exist "%~d0\%~p0\%tmpname%.txt" (  
          echo tmpfile exists!!
          exit /b
     )
@@ -20,6 +20,6 @@ for /r %directory% %%f in (*.txt) do (
     cmd /u /c type %tmpname%.txt> %%f
     echo %%f was converted
 )
-echo success
 del %tmpname%.txt
+echo success
 endlocal

@@ -22,13 +22,12 @@ namespace Rectangles
                 return xIntersection * yIntersection;
             }
             return 0;
-
-            int SearchIntersection(int aLeft, int aRight, int bLeft, int bRight)
-            {
-                var left = Math.Max(aLeft, bLeft);
-                var right = Math.Min(aRight, bRight);
-                return Math.Max(right - left, 0);
-            }
+        }
+        static int SearchIntersection(int aLeft, int aRight, int bLeft, int bRight)
+        {
+            var left = Math.Max(aLeft, bLeft);
+            var right = Math.Min(aRight, bRight);
+            return Math.Max(right - left, 0);
         }
 
         public static int IndexOfInnerRectangle(Rectangle r1, Rectangle r2)
@@ -37,22 +36,21 @@ namespace Rectangles
             var s2 = r2.Width * r2.Height;
             if (IntersectionSquare(r1, r2) != 0)
             {
-                if (s2 == IntersectionSquare(r1, r2)
-                && s1 == IntersectionSquare(r1, r2))
+                if (s2 == IntersectionSquare(r1, r2) && s1 == IntersectionSquare(r1, r2))
                     return 1;
-                else if (IntersectionSquare(r1, r2) == s1)
+                if (IntersectionSquare(r1, r2) == s1)
                     return 0;
-                else if (IntersectionSquare(r1, r2) == s2)
+                if (IntersectionSquare(r1, r2) == s2)
                     return 1;
             }
-            if (ZeroSqaureCase(r1, s1, r2, s2))
+            if (IsZeroSqaureCase(r1, s1, r2, s2))
                 return 0;
-            if (ZeroSqaureCase(r2, s2, r1, s1))
+            if (IsZeroSqaureCase(r2, s2, r1, s1))
                 return 1;
             return -1;
         }
 
-        public static bool ZeroSqaureCase(Rectangle r1, int s1, Rectangle r2, int s2)
+        static bool IsZeroSqaureCase(Rectangle r1, int s1, Rectangle r2, int s2)
         {
             return s1 == 0 && r1.Left >= r2.Left && r1.Top >= r2.Top
             && r1.Right <= r2.Right && r1.Bottom <= r2.Bottom;

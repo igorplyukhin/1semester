@@ -7,13 +7,9 @@ namespace Mazes
         public static void MoveOut(Robot robot, int width, int height)
         {
             if (width > height)
-            {
                 SolveHorizontalMaze(robot, width, height);
-            }
             else
-            {
                 SolveVerticalMaze(robot, width, height);
-            }
         }
 
         static void Move(Robot robot, int aspectRatio, Direction firstDirection, Direction secondDirection)

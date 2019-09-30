@@ -4,16 +4,16 @@
     {
         public static void MoveOut(Robot robot, int width, int height)
         {
-			MoveUntilWall(robot, width, Direction.Right);
-			MoveUntilWall(robot, height, Direction.Down);
+            Move(robot, width - 3, Direction.Right);
+            Move(robot, height - 3, Direction.Down);
         }
 
-		static void MoveUntilWall (Robot robot, int wall, Direction direction)
-		{
-			for (var i = 0; i< wall - 3; i++)
-			{
-				robot.MoveTo(direction);
-			}
-		}
+        static void Move(Robot robot, int steps, Direction direction)
+        {
+            for (var i = 0; i < steps; i++)
+            {
+                robot.MoveTo(direction);
+            }
+        }
     }
 }

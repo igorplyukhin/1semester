@@ -25,9 +25,9 @@ function EscCode(inf, outf) {
         }
     }
     let s = fs.readFileSync(inf, "utf8");
-    let encodedStr = new String;    //Закодированная строка
-    let symbol = s[0];  //Текущий символ
-    let symbolsCount = 1;   //Количество идущих подряд символов
+    let encodedStr = new String;
+    let symbol = s[0];
+    let symbolsCount = 1;
     for (i = 1; i < s.length; i++)
         if (s[i] == s[i - 1])
             symbolsCount++;
@@ -72,7 +72,7 @@ function JumpCode(inf, outf) {
             if (difSymbSeq.length > 0) {
                 encodedStr += String.fromCharCode(difSymbSeq.length + lengthLim) + difSymbSeq;
                 difSymbSeq = "";
-            }             
+            }
             while (symbCount > lengthLim - 1) {
                 encodedStr += String.fromCharCode(lengthLim - 1) + symb;
                 symbCount -= lengthLim - 1;
@@ -87,7 +87,7 @@ function JumpCode(inf, outf) {
         }
     }
 
-    const lengthLim = 128; 
+    const lengthLim = 128;
     let s = fs.readFileSync(inf, "utf8");
     let encodedStr = new String;    //Закодированная строка
     let difSymbSeq = new String; //Последовательность не повторяюшихся символов
@@ -133,6 +133,10 @@ function JumpDecode(inf, outf) {
 }
 
 inf = process.argv[4];
+if (!fs.existsSync(inf)) {
+    console.log("Input file doesn't exist");
+    return;
+}
 outf = process.argv[5];
 if (process.argv[2] == "code" && process.argv[3] == "escape")
     EscCode(inf, outf);

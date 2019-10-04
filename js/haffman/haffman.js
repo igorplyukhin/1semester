@@ -1,10 +1,12 @@
-function CreateNode(code, weight, name) {
+const fs = require("fs");
+
+function CreateNode(weight, name) {
     return {
-        code: code,
+        code: undefined,
         weight: weight,
         name: name,
-        parent: null,
-        used: null
+        parent: undefined,
+        used: undefined
     }
 }
 
@@ -17,16 +19,31 @@ function UpdateNodes(node1, node2, ParentNode) {
 
 function ConnectNodes(node1, node2) {
     let ParentNode = CreateNode(
-        code,
         node1.weight + node2.weight,
         node1.name + node2.name,
     );
-    UpdateNodes(node1, node2, ParentNode); 
+    UpdateNodes(node1, node2, ParentNode);
     return ParentNode;
 }
 
-
-let s = toString(process.argv[2]);
-for (let i = 0; i < s.length; i++) {
-    
+let letterCount = new Map();
+let objects = new Array();
+let inFile = process.argv[3];
+if (!fs.existsSync(inFile)) {
+    console.log("Input file doesn't exist");
+    return
 }
+//let outFile = fs.readFileSync(process.argv[4], "utf8")
+
+let s = fs.readFileSync(inFile, "utf8");
+for (let i = 0; i < s.length; i++) {
+    if (letterCount.has(s[i])) {
+        letterCount.set(s[i], CreateNode(letterCount.get(s[i]).weight + 1, s[i]));
+    }
+    else {
+        letterCount.set(s[i], CreateNode(1, s[i]));
+    }
+}
+
+console.log([letterCount.entries()].sort());
+

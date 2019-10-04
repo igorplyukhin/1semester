@@ -6,39 +6,22 @@ namespace Mazes
     {
         public static void MoveOut(Robot robot, int width, int height)
         {
+            var horseStepLength = (Math.Max(width, height) - 2) / (Math.Min (width, height) - 2);
             if (width > height)
-            {
-                SolveHorizontalMaze(robot, width, height);
-            }
+                while (robot.Finished == false)
+                    MakeHorseStep(robot, horseStepLength, Direction.Right, Direction.Down);
             else
-            {
-                SolveVerticalMaze(robot, width, height);
-            }
+                while (robot.Finished == false)
+                    MakeHorseStep(robot, horseStepLength, Direction.Down, Direction.Right);
         }
 
-        static void Move(Robot robot, int aspectRatio, Direction firstDirection, Direction secondDirection)
+        public static void MakeHorseStep(Robot robot, int horseStepLength, Direction firstDirection, Direction secondDirection)
         {
-            if (!robot.Finished)
-                for (var i = 0; i < aspectRatio; i++)
-                    robot.MoveTo(firstDirection);
+            for (var i = 0; i < horseStepLength; i++)
+                robot.MoveTo(firstDirection);
             if (!robot.Finished)
                 robot.MoveTo(secondDirection);
         }
-
-        static void SolveHorizontalMaze(Robot robot, int width, int height)
-        {
-            var aspectRatio = (width - 2) / (height - 2);
-            while (robot.Finished == false)
-                Move(robot, aspectRatio, Direction.Right, Direction.Down);
-        }
-
-        static void SolveVerticalMaze(Robot robot, int width, int height)
-        {
-            var aspectRatio = (height - 2) / (width - 2);
-            while (robot.Finished == false)
-                Move(robot, aspectRatio, Direction.Down, Direction.Right);
-        }
-
     }
 }
 

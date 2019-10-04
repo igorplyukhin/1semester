@@ -7,23 +7,27 @@ namespace Names
     {
         public static HistogramData GetBirthsPerDayHistogram(NameData[] names, string name)
         {
-            var birthCounts = new double[31];
-            foreach (var e in names)
-            {
-                if (e.Name == name && e.BirthDate.Day != 1)
-                    birthCounts[e.BirthDate.Day - 1]++;
-            }
-
-            var months = new string[31];
-            for (var i = 0; i < months.Length; i++)
-            {
-                months[i] = (i + 1).ToString();
-            }
-
             return new HistogramData(
                 string.Format("Рождаемость людей с именем '{0}'", name),
-                months,
-                birthCounts);
+                GetMonths(31),
+                GetBirthCounts(31, names, name));
+        }
+
+        private static string[] GetMonths(int arraySize)
+        {
+            var months = new string[arraySize];
+            for (var i = 0; i < months.Length; i++)
+                months[i] = (i + 1).ToString();
+            return months;
+        }
+
+        private static double[] GetBirthCounts(int arraySize, NameData[] names, string name)
+        {
+            var birthCounts = new double[arraySize];
+            foreach (var e in names)
+                if (e.Name == name && e.BirthDate.Day != 1)
+                    birthCounts[e.BirthDate.Day - 1]++;
+            return birthCounts;
         }
     }
 }

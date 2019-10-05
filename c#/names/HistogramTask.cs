@@ -9,21 +9,21 @@ namespace Names
         {
             return new HistogramData(
                 string.Format("Рождаемость людей с именем '{0}'", name),
-                GetMonths(31),
+                GetDays(31),
                 GetBirthCounts(31, names, name));
         }
 
-        private static string[] GetMonths(int arraySize)
+        private static string[] GetDays(int daysCount)
         {
-            var months = new string[arraySize];
+            var months = new string[daysCount];
             for (var i = 0; i < months.Length; i++)
                 months[i] = (i + 1).ToString();
             return months;
         }
 
-        private static double[] GetBirthCounts(int arraySize, NameData[] names, string name)
+        private static double[] GetBirthCounts(int daysCount, NameData[] names, string name)
         {
-            var birthCounts = new double[arraySize];
+            var birthCounts = new double[daysCount];
             foreach (var e in names)
                 if (e.Name == name && e.BirthDate.Day != 1)
                     birthCounts[e.BirthDate.Day - 1]++;

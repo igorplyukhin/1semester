@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Charts.cs" />
+    <Compile Include="CreativityTask.cs" />
     <Compile Include="HeatmapData.cs" />
     <Compile Include="HeatmapTask.cs" />
     <Compile Include="HistogramData.cs" />

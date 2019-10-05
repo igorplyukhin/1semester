@@ -6,20 +6,36 @@ namespace Names
     {
         public static HeatmapData GetBirthsPerDateHeatmap(NameData[] names)
         {
-            var months = new string[12];
-            for (int i = 0; i < 12; i++)
+            return new HeatmapData(
+                "Пример карты интенсивностей", 
+                GetBirths(30, 12, names), 
+                GetDays(30), 
+                GetMonths(12));
+        }
+
+        private static string[] GetMonths(int monthsCount)
+        {
+            var months = new string[monthsCount];
+            for (var i = 0; i < 12; i++)
                 months[i] = (i + 1).ToString();
+            return months;
+        }
 
-            var days = new string[30];
-            for (int i = 0; i < 30; i++)
+        private static string[] GetDays(int daysCount)
+        {
+            var days = new string[daysCount];
+            for (var i = 0; i < 30; i++)
                 days[i] = (i + 2).ToString();
+            return days;
+        }
 
-            var Births = new double[30, 12];
+        private static double[,] GetBirths(int daysCount, int monthsCount, NameData[] names)
+        {
+            var births = new double[daysCount, monthsCount];
             foreach (var name in names)
                 if (name.BirthDate.Day != 1)
-                    Births[name.BirthDate.Day - 2, name.BirthDate.Month - 1]++;
-
-            return new HeatmapData("Пример карты интенсивностей", Births, days, months);
+                    births[name.BirthDate.Day - 2, name.BirthDate.Month - 1]++;
+            return births;
         }
     }
 }

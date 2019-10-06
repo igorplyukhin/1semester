@@ -13,7 +13,6 @@ var Point = function(x, y){
    }
    ColorPoint.prototype = Object.create(Point.prototype);
    ColorPoint.prototype.constructor = ColorPoint;
-   34
    // Инстанцирование
    var myPoint = new Point(1, -1);
    var myColorPoint = new ColorPoint(4, 3,

@@ -1,5 +1,5 @@
 const fs = require("fs");
-
+import{Queue} from './node_c:/Users/Igor/Desktop/repos/js/haffman/node_modules/js-queue/queue.jsmodules/js-queue/'
 function CreateNode(weight, name) {
     return {
         code: undefined,
@@ -27,7 +27,7 @@ function ConnectNodes(node1, node2) {
 }
 
 let letterCount = new Map();
-let objects = new Array();
+let letters = new Array();
 let inFile = process.argv[3];
 if (!fs.existsSync(inFile)) {
     console.log("Input file doesn't exist");
@@ -45,5 +45,5 @@ for (let i = 0; i < s.length; i++) {
     }
 }
 
-console.log([letterCount.entries()].sort());
+
 

@@ -15,8 +15,8 @@ namespace TextAnalysis
             var testsToRun = new string[]
             {
                 "TextAnalysis.SentencesParser_Tests",
-                "TextAnalysis.FrequencyAnalysis_Tests",
-                "TextAnalysis.TextGenerator_Tests",
+                //"TextAnalysis.FrequencyAnalysis_Tests",
+                //"TextAnalysis.TextGenerator_Tests",
             };
             new AutoRun().Execute(new[]
             {
@@ -28,6 +28,7 @@ namespace TextAnalysis
             var text = File.ReadAllText("HarryPotterText.txt");
             var sentences = SentencesParserTask.ParseSentences(text);
             var frequency = FrequencyAnalysisTask.GetMostFrequentNextWords(sentences);
+
             //Расскомментируйте этот блок, если хотите выполнить последнюю задачу до первых двух.
             /*
             frequency = new Dictionary<string, string>
@@ -44,14 +45,14 @@ namespace TextAnalysis
                 {"wizard", "harry" },
             };
             */
-            while (true)
-            {
-                Console.Write("Введите первое слово (например, harry): ");
-                var beginning = Console.ReadLine();
-                if (string.IsNullOrEmpty(beginning)) return;
-                var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), 10);
-                Console.WriteLine(phrase);
-            }
+            //while (true)
+            //{
+            //    Console.Write("Введите первое слово (например, harry): ");
+            //    var beginning = Console.ReadLine();
+            //    if (string.IsNullOrEmpty(beginning)) return;
+            //    var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), 10);
+            //    Console.WriteLine(phrase);
+            //}
         }
     }
 }

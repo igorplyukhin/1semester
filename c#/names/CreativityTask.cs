@@ -35,7 +35,7 @@ namespace Names
             }
 
             return new HistogramData(
-                string.Format("Визуализация рождаемости имени {0}",
+                string.Format("Самое популярное имя - {0}",
                 mostOftenName),
                 GetYears(minYear, maxYear),
                 GetBirths(names, mostOftenName, birthsMax, minYear)

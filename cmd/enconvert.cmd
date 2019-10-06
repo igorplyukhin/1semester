@@ -18,7 +18,6 @@ if exist "%~d0\%~p0\%tmpname%.txt" (
 for /r %directory% %%f in (*.txt) do (
     type %%f> %tmpname%.txt
     cmd /u /c type %tmpname%.txt> %%f
-    echo %%f was converted
 )
 del %tmpname%.txt
 echo success

@@ -4,29 +4,24 @@ namespace Names
 {
     internal static class HeatmapTask
     {
+        const int DaysCount = 30;
+        const int MonthsCount = 12;
+
         public static HeatmapData GetBirthsPerDateHeatmap(NameData[] names)
         {
             return new HeatmapData(
                 "Пример карты интенсивностей", 
-                GetBirths(30, 12, names), 
-                GetDays(30), 
-                GetMonths(12));
+                GetBirths(DaysCount, MonthsCount, names),
+                GetHistogramLabels(DaysCount, 2),
+                GetHistogramLabels(MonthsCount, 1));
         }
 
-        private static string[] GetMonths(int monthsCount)
+        private static string[] GetHistogramLabels(int count, int step)
         {
-            var months = new string[monthsCount];
-            for (var i = 0; i < 12; i++)
-                months[i] = (i + 1).ToString();
-            return months;
-        }
-
-        private static string[] GetDays(int daysCount)
-        {
-            var days = new string[daysCount];
-            for (var i = 0; i < 30; i++)
-                days[i] = (i + 2).ToString();
-            return days;
+            var lables = new string[count];
+            for (var i = 0; i < count; i++)
+                lables[i] = (i + step).ToString();
+            return lables;
         }
 
         private static double[,] GetBirths(int daysCount, int monthsCount, NameData[] names)

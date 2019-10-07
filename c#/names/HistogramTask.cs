@@ -5,25 +5,28 @@ namespace Names
 {
     internal static class HistogramTask
     {
+        const int DaysCount = 31;
+        const int Step = 1;
+
         public static HistogramData GetBirthsPerDayHistogram(NameData[] names, string name)
         {
             return new HistogramData(
                 string.Format("Рождаемость людей с именем '{0}'", name),
-                GetDays(31),
-                GetBirthCounts(31, names, name));
+                GetHistogramLabels(DaysCount, Step),
+                GetBirthCounts(DaysCount, names, name));
         }
 
-        private static string[] GetDays(int daysCount)
+        private static string[] GetHistogramLabels(int count, int step)
         {
-            var months = new string[daysCount];
-            for (var i = 0; i < months.Length; i++)
-                months[i] = (i + 1).ToString();
-            return months;
+            var labels = new string[count];
+            for (var i = 0; i < labels.Length; i++)
+                labels[i] = (i + step).ToString();
+            return labels;
         }
 
-        private static double[] GetBirthCounts(int daysCount, NameData[] names, string name)
+        private static double[] GetBirthCounts(int count, NameData[] names, string name)
         {
-            var birthCounts = new double[daysCount];
+            var birthCounts = new double[count];
             foreach (var e in names)
                 if (e.Name == name && e.BirthDate.Day != 1)
                     birthCounts[e.BirthDate.Day - 1]++;

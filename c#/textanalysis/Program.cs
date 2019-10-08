@@ -16,7 +16,7 @@ namespace TextAnalysis
             {
                 "TextAnalysis.SentencesParser_Tests",
                 "TextAnalysis.FrequencyAnalysis_Tests",
-                //"TextAnalysis.TextGenerator_Tests",
+                "TextAnalysis.TextGenerator_Tests",
             };
             new AutoRun().Execute(new[]
             {
@@ -45,14 +45,14 @@ namespace TextAnalysis
                 {"wizard", "harry" },
             };
             */
-            //while (true)
-            //{
-            //    Console.Write("Введите первое слово (например, harry): ");
-            //    var beginning = Console.ReadLine();
-            //    if (string.IsNullOrEmpty(beginning)) return;
-            //    var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), 10);
-            //    Console.WriteLine(phrase);
-            //}
+            while (true)
+            {
+                Console.Write("Введите первое слово (например, harry): ");
+                var beginning = Console.ReadLine();
+                if (string.IsNullOrEmpty(beginning)) return;
+                var phrase = TextGeneratorTask.ContinuePhrase(frequency, beginning.ToLower(), 10);
+                Console.WriteLine(phrase);
+            }
         }
     }
 }

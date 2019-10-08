@@ -9,30 +9,66 @@ namespace TextAnalysis
     {
         public static Dictionary<string, string> GetMostFrequentNextWords(List<List<string>> text)
         {
-            var bigrams = new Dictionary<string, int>();
-            var trigrams = new Dictionary<string, int>();
-            var mostOftenNGrams = new Dictionary<string, string>();
-            for (var i = 0; i < text.Count; i++)
-                for (var j = 0; j < text[i].Count - 1; j++)
+            var allPossibleNgrams = new Dictionary<string, Dictionary<string, int>>();
+            for (var sentence = 0; sentence < text.Count; sentence++)
+                for (var word = 0; word < text[sentence].Count - 1; word++)
                 {
-                    if (!bigrams.ContainsKey(text[i][j] + " " + text[i][j + 1]))
-                        bigrams.Add(text[i][j] + " " + text[i][j + 1], 1);
-                    else
-                        bigrams[text[i][j] + " " + text[i][j + 1]] += 1;
+                    var currentWord = text[sentence][word];
+                    var nextWord = text[sentence][word + 1];
+                    var twoWords = currentWord + ' ' + nextWord;
+                    AddBigram(allPossibleNgrams, currentWord, nextWord);
+                    if (word != text[sentence].Count - 2)
+                    {
+                        var wordThroughOne = text[sentence][word + 2];
+                        AddTrigram(allPossibleNgrams, twoWords, wordThroughOne);
+                    }
                 }
+            return GetMostOftenNgrams(allPossibleNgrams);
+        }
 
-            for (var i = 0; i < bigrams.Count; i++)
-                for (var j = 0; j < bigrams.Count; j++)
-                    if (i != j
-                        && bigrams.Keys.ToArray()[i].Split()[0] == bigrams.Keys.ToArray()[j].Split()[0]
-                        && (bigrams.Values.ToArray()[i] > bigrams.Values.ToArray()[j] 
-                        || bigrams.Values.ToArray()[i] == bigrams.Values.ToArray()[j] 
-                        && string.CompareOrdinal(bigrams.Keys.ToArray()[i].Split()[1], bigrams.Keys.ToArray()[j].Split()[1]) > 0))
-                        bigrams.Remove(bigrams.Keys.ToArray()[j]);
-            foreach (var e in bigrams)
-                Console.WriteLine(e);
+        private static Dictionary<string, string> GetMostOftenNgrams(Dictionary<string, Dictionary<string, int>> allPossibleNgrams)
+        {
+            var mostOftenNgrams = new Dictionary<string, string>();
+            foreach (var firstPart in allPossibleNgrams)
+            {
+                var sortedPossibleBigrams = firstPart.Value.OrderByDescending(x => x.Value);
+                var mostOftenSecondPart = sortedPossibleBigrams.ElementAt(0).Key;
+                foreach (var secondPart in sortedPossibleBigrams)
+                    if (secondPart.Value == sortedPossibleBigrams.ElementAt(0).Value)
+                        if (string.CompareOrdinal(mostOftenSecondPart, secondPart.Key) > 0)
+                            mostOftenSecondPart = secondPart.Key;
+                        else
+                            continue;
+                    else
+                        break;
 
-            return new Dictionary<string, string>();
+                mostOftenNgrams.Add(firstPart.Key, mostOftenSecondPart);
+            }
+            return mostOftenNgrams;
+        }
+
+        private static void AddBigram(Dictionary<string, Dictionary<string, int>> allPossibleNgrams, string currentWord, string nextWord)
+        {
+            if (allPossibleNgrams.ContainsKey(currentWord))
+                if (allPossibleNgrams[currentWord].ContainsKey(nextWord))
+                    allPossibleNgrams[currentWord][nextWord]++;
+                else
+                    allPossibleNgrams[currentWord].Add(nextWord, 1);
+            else
+                allPossibleNgrams.Add(currentWord, new Dictionary<string, int> { { nextWord, 1 } });
+        }
+
+        private static void AddTrigram(Dictionary<string, Dictionary<string, int>> allPossibleNgrams, string twoWords, string wordThroughOne)
+        {
+            {
+                if (allPossibleNgrams.ContainsKey(twoWords))
+                    if (allPossibleNgrams[twoWords].ContainsKey(wordThroughOne))
+                        allPossibleNgrams[twoWords][wordThroughOne]++;
+                    else
+                        allPossibleNgrams[twoWords].Add(wordThroughOne, 1);
+                else
+                    allPossibleNgrams.Add(twoWords, new Dictionary<string, int> { { wordThroughOne, 1 } });
+            }
         }
     }
 }

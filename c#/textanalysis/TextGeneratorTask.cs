@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace TextAnalysis
 {
@@ -12,14 +13,13 @@ namespace TextAnalysis
             while (wordsCount > 0)
             {
                 var splitedPhrase = phraseBeginning.Split();
-                if (splitedPhrase.Length >= 2)
-                {
-                    var preLastWord = splitedPhrase[phraseBeginning.Split().Length - 2];
-                    if (nextWords.ContainsKey(preLastWord + ' ' + splitedPhrase[splitedPhrase.Length - 1]))
-                        phraseBeginning += nextWords[preLastWord + ' ' + splitedPhrase[splitedPhrase.Length -1]];
-                }
-                else if (nextWords.ContainsKey(splitedPhrase[splitedPhrase.Length - 1]))
-                    phraseBeginning += nextWords[splitedPhrase[splitedPhrase.Length - 1]];
+                var lastWord = splitedPhrase.Last();
+                var prelastWord = splitedPhrase.Length >= 2 ? splitedPhrase[splitedPhrase.Length - 2] : "";
+                if (splitedPhrase.Length >= 2 
+                    && nextWords.ContainsKey(prelastWord + ' ' + lastWord))
+                    phraseBeginning += ' ' + nextWords[prelastWord + ' ' + lastWord];
+                else if (nextWords.ContainsKey(lastWord))
+                    phraseBeginning += ' ' + nextWords[lastWord];
                 else
                     break;
                 wordsCount--;

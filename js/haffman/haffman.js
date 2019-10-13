@@ -88,6 +88,7 @@ function Decode(inFile, tableFile, outFile) {
         table[splitedTable[i]] = splitedTable[i - 1];
         i--;
     }
+
     
     //Поиск соответствий
     for (let i = 0; i < s.length; i++) {
@@ -98,7 +99,7 @@ function Decode(inFile, tableFile, outFile) {
                 fs.writeFileSync(outFile, decodedStr);
                 console.log("Can't be fully decoded");
                 return;
-            }
+            }   
             j++
             key += s[j];
         }
@@ -107,3 +108,14 @@ function Decode(inFile, tableFile, outFile) {
     }
     fs.writeFileSync(outFile, decodedStr);
 }
+
+
+
+
+let inFile = process.argv[3];
+let tableFile = process.argv[4];
+let outFile = process.argv[5];
+let s = fs.readFileSync(inFile, "utf8");
+
+Code(s, tableFile, outFile);
+

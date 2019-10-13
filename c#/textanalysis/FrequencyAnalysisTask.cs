@@ -11,22 +11,24 @@ namespace TextAnalysis
         {
             var allPossibleNgrams = new Dictionary<string, Dictionary<string, int>>();
             for (var sentence = 0; sentence < text.Count; sentence++)
-                for (var word = 0; word < text[sentence].Count - 1; word++)
+            for (var word = 0; word < text[sentence].Count - 1; word++)
+            {
+                var currentWord = text[sentence][word];
+                var nextWord = text[sentence][word + 1];
+                var twoWords = currentWord + ' ' + nextWord;
+                AddNGram(allPossibleNgrams, currentWord, nextWord);
+                if (word != text[sentence].Count - 2)
                 {
-                    var currentWord = text[sentence][word];
-                    var nextWord = text[sentence][word + 1];
-                    var twoWords = currentWord + ' ' + nextWord;
-                    AddBigram(allPossibleNgrams, currentWord, nextWord);
-                    if (word != text[sentence].Count - 2)
-                    {
-                        var wordThroughOne = text[sentence][word + 2];
-                        AddTrigram(allPossibleNgrams, twoWords, wordThroughOne);
-                    }
+                    var wordThroughOne = text[sentence][word + 2];
+                    AddNGram(allPossibleNgrams, twoWords, wordThroughOne);
                 }
+            }
+
             return GetMostOftenNgrams(allPossibleNgrams);
         }
 
-        private static Dictionary<string, string> GetMostOftenNgrams(Dictionary<string, Dictionary<string, int>> allPossibleNgrams)
+        private static Dictionary<string, string> GetMostOftenNgrams(
+            Dictionary<string, Dictionary<string, int>> allPossibleNgrams)
         {
             var mostOftenNgrams = new Dictionary<string, string>();
             foreach (var firstPart in allPossibleNgrams)
@@ -44,31 +46,20 @@ namespace TextAnalysis
 
                 mostOftenNgrams.Add(firstPart.Key, mostOftenSecondPart);
             }
+
             return mostOftenNgrams;
         }
 
-        private static void AddBigram(Dictionary<string, Dictionary<string, int>> allPossibleNgrams, string currentWord, string nextWord)
+        private static void AddNGram(Dictionary<string, Dictionary<string, int>> allPossibleNgrams, string firstPart,
+            string secondPart)
         {
-            if (allPossibleNgrams.ContainsKey(currentWord))
-                if (allPossibleNgrams[currentWord].ContainsKey(nextWord))
-                    allPossibleNgrams[currentWord][nextWord]++;
+            if (allPossibleNgrams.ContainsKey(firstPart))
+                if (allPossibleNgrams[firstPart].ContainsKey(secondPart))
+                    allPossibleNgrams[firstPart][secondPart]++;
                 else
-                    allPossibleNgrams[currentWord].Add(nextWord, 1);
+                    allPossibleNgrams[firstPart].Add(secondPart, 1);
             else
-                allPossibleNgrams.Add(currentWord, new Dictionary<string, int> { { nextWord, 1 } });
-        }
-
-        private static void AddTrigram(Dictionary<string, Dictionary<string, int>> allPossibleNgrams, string twoWords, string wordThroughOne)
-        {
-            {
-                if (allPossibleNgrams.ContainsKey(twoWords))
-                    if (allPossibleNgrams[twoWords].ContainsKey(wordThroughOne))
-                        allPossibleNgrams[twoWords][wordThroughOne]++;
-                    else
-                        allPossibleNgrams[twoWords].Add(wordThroughOne, 1);
-                else
-                    allPossibleNgrams.Add(twoWords, new Dictionary<string, int> { { wordThroughOne, 1 } });
-            }
+                allPossibleNgrams.Add(firstPart, new Dictionary<string, int> {{secondPart, 1}});
         }
     }
 }

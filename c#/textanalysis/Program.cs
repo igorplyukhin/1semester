@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using NUnitLite;
 
 namespace TextAnalysis
@@ -12,6 +13,7 @@ namespace TextAnalysis
             // Запуск автоматических тестов. Ниже список тестовых наборов, который нужно запустить.
             // Закомментируйте тесты на те задачи, к которым ещё не приступали, чтобы они не мешались в консоли.
             // Все непрошедшие тесты 
+            File.WriteAllText("C:\test\new.txt", "123456");
             var testsToRun = new string[]
             {
                 "TextAnalysis.SentencesParser_Tests",

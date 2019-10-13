@@ -74,7 +74,7 @@ function Decode(s, tableFile, outFile) {
     for (let i = 0; i < strtable.split(/[\n ]+/).length - 1; i + 1) {
         //table[strtable[i]] = strtable[i + 1];
     }
-    console.log(table);
+
 }
 
 let inFile = process.argv[3];
@@ -82,4 +82,4 @@ let tableFile = process.argv[4];
 let outFile = process.argv[5];
 let s = fs.readFileSync(inFile, "utf8");
 
-Decode(s, tableFile, outFile);
+Code(s, tableFile, outFile);

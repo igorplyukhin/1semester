@@ -11,36 +11,34 @@ namespace TableParser
     [TestFixture]
     public class QuotedFieldTaskTests
     {
-        [TestCase("abcd", 0, "abcd", 4)]
         [TestCase("''", 0, "", 2)]
-        [TestCase("'a'", 0, "a", 3)]
+        [TestCase("'abc'", 0, "abc", 5)]
+        [TestCase("b'a'd", 1, "a", 3)]
+        [TestCase("'abc", 0, "abc", 4)]
         public void Test(string line, int startIndex, string expectedValue, int expectedLength)
         {
             var actualToken = QuotedFieldTask.ReadQuotedField(line, startIndex);
-            Assert.AreEqual(actualToken, new Token(expectedValue, startIndex, expectedLength));
+            Assert.AreEqual(new Token(expectedValue, startIndex, expectedLength), actualToken);
         }
-
-        // Добавьте свои тесты
     }
+
 
     class QuotedFieldTask
     {
         public static Token ReadQuotedField(string line, int startIndex)
         {
-            var value = new StringBuilder();
-            for (var i = 0; i < line.Length; i++)
+            var subLine = line.Substring(startIndex);
+            var endIndex = subLine.Length - 1;
+            for (var i = 1; i < subLine.Length; i++)
             {
-                if (line[i] == '\'' || line[i] == '\"')
+                if (subLine[i] == subLine[0])
                 {
-                    while (line[i] != line[0])
-                    {
-                        value.Append(line[i]);
-                        i++;
-                    }
+                    endIndex = i;
+                    break;
                 }
             }
 
-            return new Token(value.ToString(), startIndex + 1, line.Length - startIndex);
+            return new Token(subLine.Substring(0, endIndex + 1).Trim(subLine[0]), startIndex, endIndex + 1);
         }
     }
 }

@@ -23,8 +23,10 @@
     <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/FieldsParserTask.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/497E7C03-5433-4AE6-B257-9B219192BCF0/ce/398ade85/Reflect.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/EF28F193-EAB6-4E49-B44B-3FB27EAB4F75/42/145f1d17/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/497E7C03-5433-4AE6-B257-9B219192BCF0/80/5764ba98/WorkItem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/497E7C03-5433-4AE6-B257-9B219192BCF0/39/25e3a9ab/MethodWrapper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/658271AA-00D0-42A5-A887-5350393FEE96/22/8b5de3c1/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2ECD3F11-D027-42CB-A32F-58723999A994/c0/0f8d326a/ThreadHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/497E7C03-5433-4AE6-B257-9B219192BCF0/f3/fa2634eb/TestMethodCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/497E7C03-5433-4AE6-B257-9B219192BCF0/92/583b0f0d/ParallelWorkItemDispatcher.cs" root0="SKIP_HIGHLIGHTING" />
@@ -35,6 +37,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/QuotedFieldTask.cs" />
+        <option value="$PROJECT_DIR$/FieldsParserTask.cs" />
       </list>
     </option>
   </component>
@@ -92,6 +95,10 @@
       <workItem from="1570983609751" duration="2748000" />
       <workItem from="1571054679211" duration="5012000" />
       <workItem from="1571060513283" duration="185000" />
+      <workItem from="1571152360291" duration="3157000" />
+      <workItem from="1571549430995" duration="976000" />
+      <workItem from="1571557185563" duration="3883000" />
+      <workItem from="1571566878930" duration="2147000" />
     </task>
     <servers />
   </component>
@@ -123,19 +130,6 @@
           <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/QuotedFieldTask.cs</url>
-          <line>29</line>
-          <properties documentPath="$PROJECT_DIR$/QuotedFieldTask.cs" initialLine="28">
-            <startOffsets>
-              <option value="837" />
-            </startOffsets>
-            <endOffsets>
-              <option value="878" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

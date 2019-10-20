@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
+using System.Linq.Expressions;
+using System.Windows.Forms;
 
 namespace TableParser
 {
@@ -12,25 +15,84 @@ namespace TableParser
             Assert.AreEqual(expectedResult.Length, actualResult.Count);
             for (int i = 0; i < expectedResult.Length; ++i)
             {
-                Assert.AreEqual(expectedResult[i], actualResult[i]);
+                Assert.AreEqual(expectedResult[i], actualResult[i].Value);
             }
         }
 
-        // Скопируйте сюда метод с тестами из предыдущей задачи.
+        [TestCase("    ", new string[] { })]
+        [TestCase("\'\\\\ \'", new[] {"\\ "})]
+        [TestCase("\'\\\\\'", new[] {"\\"})]
+        [TestCase("text", new[] {"text"})]
+        [TestCase("hello world", new[] {"hello", "world"})]
+        [TestCase("text 'text'", new[] {"text", "text"})]
+        [TestCase("text'text'", new[] {"text", "text"})]
+        [TestCase("text 'text", new[] {"text", "text"})]
+        [TestCase("'b'c", new[] {"b", "c"})]
+        [TestCase("''", new[] {""})]
+        [TestCase(" a", new[] {"a"})]
+        [TestCase("a  'b'", new[] {"a", "b"})]
+        [TestCase("'\"1\" \"2\"'", new[] {"\"1\" \"2\""})]
+        [TestCase("\"a 'b'\"", new[] {"a 'b'"})]
+        [TestCase("'a'\"b\"", new[] {"a", "b"})]
+        [TestCase("\"a\\\"\"", new[] {"a\""})]
+        [TestCase("\'a\\\'\'", new[] {"a\'"})]
+        [TestCase("", new string[] { })]
+        [TestCase("\' ", new[] {" "})]
+        public static void RunTests(string input, string[] expectedOutput)
+        {
+            Test(input, expectedOutput);
+        }
     }
 
     public class FieldsParserTask
     {
-        // При решении этой задаче постарайтесь избежать создания методов, длиннее 10 строк.
-        // Подумайте как можно использовать ReadQuotedField и Token в этой задаче.
+        private static readonly char[] Splitters = {'\'', '\"', ' '};
+
         public static List<Token> ParseLine(string line)
         {
-            return new List<Token> { ReadQuotedField(line, 0) }; // сокращенный синтаксис для инициализации коллекции.
+            var i = 0;
+            var parsedLine = new List<Token>();
+            Token token;
+            while (i < line.Length)
+            {
+                if (Splitters.Take(2).Contains(line[i]))
+                    token = ReadQuotedField(line, i);
+                else if (line[i] == Splitters.ElementAt(2))
+                {
+                    i = SkipBlankField(line, i);
+                    continue;
+                }
+                else
+                    token = ReadField(line, i);
+
+                i = token.GetIndexNextToToken();
+                parsedLine.Add(token);
+            }
+
+            return parsedLine;
         }
-        
+
         private static Token ReadField(string line, int startIndex)
         {
-            return new Token(line, 0, line.Length);
+            var i = startIndex + 1;
+            while (i != line.Length && !Splitters.Contains(line[i]))
+            {
+                i++;
+            }
+
+            return new Token(
+                line.Substring(startIndex, i - startIndex),
+                startIndex,
+                i - startIndex);
+        }
+
+        private static int SkipBlankField(string line, int startIndex)
+        {
+            var i = startIndex + 1;
+            while (i != line.Length && line[i] == ' ')
+                i++;
+
+            return i;
         }
 
         public static Token ReadQuotedField(string line, int startIndex)

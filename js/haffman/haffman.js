@@ -1,6 +1,11 @@
 const fs = require('fs')
+let inFile = process.argv[3];
+let tableFile = process.argv[4];
+let outFile = process.argv[5];
 
-function Code(s, tableFile, outFile) {
+process.argv[2] === "code" ? Code(inFile, tableFile, outFile) : Decode(inFile, tableFile, outFile);
+
+function Code(inFile, tableFile, outFile) {
     let Node = function (count) {
         this.count = count;
     };
@@ -14,7 +19,7 @@ function Code(s, tableFile, outFile) {
         return code;
     }
 
-    function UpdateTemp(temp, min1Letter, min2Letter, min1, min2) {
+    function Update(temp, min1Letter, min2Letter, min1, min2) {
         delete temp[min1Letter];
         delete temp[min2Letter];
         temp[min1Letter + min2Letter] = new Node(min1 + min2);
@@ -24,7 +29,7 @@ function Code(s, tableFile, outFile) {
         table[min2Letter].code = 1;
         table[min1Letter + min2Letter] = new Node(min1 + min2);
     }
-
+    let s = fs.readFileSync(inFile, "utf8");
     fs.writeFileSync(tableFile, "");
     fs.writeFileSync(outFile, "");
     let letters = {};
@@ -40,19 +45,23 @@ function Code(s, tableFile, outFile) {
     let temp = { ...letters };
     //Строим дерево
     while (Object.keys(temp).length > 1) {
-        let min1Letter;
-        let min2Letter;
+        let min1Letter = "";
+        let min2Letter = "";
         let min1 = Infinity;
         let min2 = Infinity;
-        for (let key in temp) {
+        for (let key in temp)
             if (temp[key].count <= min1) {
-                min2Letter = min1Letter;
                 min1Letter = key;
-                min2 = min1;
                 min1 = temp[key].count;
             }
-        }
-        UpdateTemp(temp, min1Letter, min2Letter, min1, min2)
+
+        for (let key in temp)
+            if (temp[key].count <= min2 && key != min1Letter) {
+                min2Letter = key;
+                min2 = temp[key].count;
+            }
+
+        Update(temp, min1Letter, min2Letter, min1, min2)
     }
     //Составляем коды
     for (let key in table) {
@@ -67,19 +76,34 @@ function Code(s, tableFile, outFile) {
     }
 }
 
-function Decode(s, tableFile, outFile) {
+function Decode(inFile, tableFile, outFile) {
+    let s = fs.readFileSync(inFile, "utf8");
     let strtable = fs.readFileSync(tableFile, "utf8");
+    let splitedTable = strtable.trim().split(/[\n ]+/);
     let table = {};
+    let decodedStr = "";
 
-    for (let i = 0; i < strtable.split(/[\n ]+/).length - 1; i + 1) {
-        //table[strtable[i]] = strtable[i + 1];
+    //Парсинг table.txt
+    for (let i = splitedTable.length - 1; i >= 0; i--) {
+        table[splitedTable[i]] = splitedTable[i - 1];
+        i--;
     }
-    console.log(table);
+    
+    //Поиск соответствий
+    for (let i = 0; i < s.length; i++) {
+        let key = s[i];
+        let j = i;
+        while (!(key in table)) {
+            if (j === s.length - 1){
+                fs.writeFileSync(outFile, decodedStr);
+                console.log("Can't be fully decoded");
+                return;
+            }
+            j++
+            key += s[j];
+        }
+        i = j;
+        decodedStr += table[key];
+    }
+    fs.writeFileSync(outFile, decodedStr);
 }
-
-let inFile = process.argv[3];
-let tableFile = process.argv[4];
-let outFile = process.argv[5];
-let s = fs.readFileSync(inFile, "utf8");
-
-Decode(s, tableFile, outFile);

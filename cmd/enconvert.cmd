@@ -21,4 +21,3 @@ for /r %directory% %%f in (*.txt) do (
 )
 del %tmpname%.txt
 echo success
-endlocal

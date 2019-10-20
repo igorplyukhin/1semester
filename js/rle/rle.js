@@ -1,30 +1,46 @@
 const fs = require('fs');
 const escSymbol = "#";
+const lengthLim = 128;
 
-function EscCode(inf, outf) {
+inf = process.argv[4];
+let s = fs.readFileSync(inf, "utf8");
+if (!fs.existsSync(inf)) {
+    console.log("Input file doesn't exist");
+    return;
+}
+outf = process.argv[5];
+if (process.argv[2] == "code" && process.argv[3] == "escape")
+    EscCode(outf);
+else if (process.argv[2] == "decode" && process.argv[3] == "escape")
+    EscDecode(outf);
+else if (process.argv[2] == "code" && process.argv[3] == "jump")
+    JumpCode(outf);
+else if (process.argv[2] == "decode" && process.argv[3] == "jump")
+    JumpDecode(outf);
+else console.log("Something went wrong");
+
+function EscCode(outf) {
     function Code() {
-        if (symbol != escSymbol) {
-            while (symbolsCount > 259) {
-                encodedStr += escSymbol + String.fromCharCode(255) + symbol;
-                symbolsCount -= 259;
-            }
+        if (symbol != escSymbol)
             if (symbolsCount > 3)
-                encodedStr += escSymbol + String.fromCharCode(symbolsCount - 4) + symbol;
+                CodeWithOffset(4);
             else
                 while (symbolsCount > 0) {
                     encodedStr += symbol;
                     symbolsCount--;
                 }
-        }
-        else {
-            while (symbolsCount > 256) {
-                encodedStr += escSymbol + String.fromCharCode(255) + symbol;
-                symbolsCount -= 256;
-            }
-            encodedStr += escSymbol + String.fromCharCode(symbolsCount - 1) + symbol;
-        }
+        else
+            CodeWithOffset(1);
     }
-    let s = fs.readFileSync(inf, "utf8");
+
+    function CodeWithOffset(offset) {
+        while (symbolsCount > 255 + offset) {
+            encodedStr += escSymbol + String.fromCharCode(255) + symbol;
+            symbolsCount -= 255 + offset;
+        }
+        encodedStr += escSymbol + String.fromCharCode(symbolsCount - offset) + symbol;
+    }
+
     let encodedStr = new String;
     let symbol = s[0];
     let symbolsCount = 1;
@@ -40,8 +56,7 @@ function EscCode(inf, outf) {
     fs.writeFileSync(outf, encodedStr);
 }
 
-function EscDecode(inf, outf) {
-    let s = fs.readFileSync(inf, "utf8");
+function EscDecode(outf) {
     let decodedStr = new String;
     let symbolsAmmount = 1;
     for (i = 0; i < s.length; i++) {
@@ -62,7 +77,7 @@ function EscDecode(inf, outf) {
     fs.writeFileSync(outf, decodedStr);
 }
 
-function JumpCode(inf, outf) {
+function JumpCode(outf) {
     function Code() {
         if (symbCount > 2) {
             while (difSymbSeq.length > lengthLim - 1) {
@@ -86,9 +101,6 @@ function JumpCode(inf, outf) {
             }
         }
     }
-
-    const lengthLim = 128;
-    let s = fs.readFileSync(inf, "utf8");
     let encodedStr = new String;    //Закодированная строка
     let difSymbSeq = new String; //Последовательность не повторяюшихся символов
     let symb = s[0];  //Текущий символ
@@ -110,12 +122,11 @@ function JumpCode(inf, outf) {
     fs.writeFileSync(outf, encodedStr);
 }
 
-function JumpDecode(inf, outf) {
-    let s = fs.readFileSync(inf, "utf8");
+function JumpDecode(outf) {
     let symbolsCount = 0;
     let decodedString = new String;
     for (let i = 0; i < s.length; i++) {
-        if (s[i].charCodeAt(0) < 128) {
+        if (s[i].charCodeAt(0) < lengthLim) {
             symbolsCount = s[i].charCodeAt(0);
             while (symbolsCount > 0) {
                 decodedString += s[i + 1]
@@ -124,7 +135,7 @@ function JumpDecode(inf, outf) {
             i++;
         }
         else {
-            symbolsCount = s[i].charCodeAt(0) - 128;
+            symbolsCount = s[i].charCodeAt(0) - lengthLim;
             decodedString += s.substr(i + 1, symbolsCount);
             i += symbolsCount;
         }
@@ -132,18 +143,3 @@ function JumpDecode(inf, outf) {
     fs.writeFileSync(outf, decodedString);
 }
 
-inf = process.argv[4];
-if (!fs.existsSync(inf)) {
-    console.log("Input file doesn't exist");
-    return;
-}
-outf = process.argv[5];
-if (process.argv[2] == "code" && process.argv[3] == "escape")
-    EscCode(inf, outf);
-else if (process.argv[2] == "decode" && process.argv[3] == "escape")
-    EscDecode(inf, outf);
-else if (process.argv[2] == "code" && process.argv[3] == "jump")
-    JumpCode(inf, outf);
-else if (process.argv[2] == "decode" && process.argv[3] == "jump")
-    JumpDecode(inf, outf);
-else console.log("Something went wrong");

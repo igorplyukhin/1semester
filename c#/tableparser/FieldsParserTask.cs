@@ -55,9 +55,9 @@ namespace TableParser
             Token token;
             while (i < line.Length)
             {
-                if (Splitters.Take(2).Contains(line[i]))
+                if (line[i] == '\'' || line[i] == '\"')
                     token = ReadQuotedField(line, i);
-                else if (line[i] == Splitters.ElementAt(2))
+                else if (line[i] == ' ')
                 {
                     i = SkipBlankField(line, i);
                     continue;

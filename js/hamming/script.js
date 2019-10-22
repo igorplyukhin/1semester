@@ -1,22 +1,44 @@
-var Point = function(x, y){
-    this.x = x;
-    this.y = y;
-   };
-   Point.prototype.move = function(deltaX, deltaY){
-    this.x += deltaX;
-    this.y += deltaY;
-   };
-   // Наследование
-   var ColorPoint = function(x, y, color){
-    Point.call(this, x, y);
-    this.color= color;
-   }
-   ColorPoint.prototype = Object.create(Point.prototype);
-   ColorPoint.prototype.constructor = ColorPoint;
-   // Инстанцирование
-   var myPoint = new Point(1, -1);
-   var myColorPoint = new ColorPoint(4, 3,
-   'red');
-   myColorPoint.move(2,4);
-   console.log(myColorPoint.x, myColorPoint.y)
-   // 6, 7
+function Code() {
+    var message = document.getElementById('mes').value;
+    let num = message.split('').map(Number);
+    let x = (num[0] + num[1] + num[2]) % 2;
+    let y = (num[0] + num[1] + num[3]) % 2;
+    let z = (num[0] + num[2] + num[3]) % 2;
+    document.getElementById('mes_cod').value = message + x + y + z;
+}
+
+function Decode() {
+    var message = document.getElementById('mes_cod').value;
+    let num = message.split('').map(Number);
+    let top = (num[0] + num[1] + num[2] + num[4]) % 2;
+    let rigth = (num[0] + num[1] + num[3] + num[5]) % 2;
+    let left = (num[0] + num[2] + num[3] + num[6]) % 2;
+    let error = top.toString() + rigth.toString() + left.toString();
+    if (error === "000")
+        document.getElementById('decod_mes').value = message.substr(0, 4);
+    else {
+        if (error != "011" && error != "100")
+            error = Invert(error);
+        num[parseInt(error, 2)] = (num[parseInt(error, 2)] + 1) % 2;
+        document.getElementById('decod_mes').value = num.join('').substr(0, 4);
+        document.getElementById('error').innerText = 'One error was corrected';
+    }
+}
+
+function Invert(number) {
+    let s = "";
+    for (let i = 0; i < number.length; i++)
+        s += (parseInt(number[i]) + 1) % 2;
+    return s;
+}
+
+function Refresh() {
+    document.getElementById('error').innerText = '';
+}
+
+function CheckChar(id)
+{
+    var str=document.getElementById(id);
+    var regex=/[^0-1]/gi;
+    str.value=str.value.replace(regex ,"");
+}

@@ -27,6 +27,7 @@
         <option value="$PROJECT_DIR$/GrayscaleTask.cs" />
         <option value="$PROJECT_DIR$/MedianFilterTask.cs" />
         <option value="$PROJECT_DIR$/ThresholdFilterTask.cs" />
+        <option value="$PROJECT_DIR$/SobelFilterTask.cs" />
       </list>
     </option>
   </component>
@@ -84,6 +85,9 @@
       <workItem from="1571679273263" duration="2632000" />
       <workItem from="1571683403598" duration="825000" />
       <workItem from="1571760874894" duration="3951000" />
+      <workItem from="1571891326788" duration="3141000" />
+      <workItem from="1571895151533" duration="765000" />
+      <workItem from="1571929922021" duration="308000" />
     </task>
     <servers />
   </component>

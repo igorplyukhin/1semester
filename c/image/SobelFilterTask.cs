@@ -23,7 +23,7 @@ namespace Recognizer
                             gy += g[x - sxWidth / 2 + xClose, y - sxWidth / 2 + yClose] * sx[yClose , xClose];
                         }
 
-                     result[x, y] = Math.Sqrt(gx * gx + gy * gy);
+                    result[x, y] = Math.Sqrt(gx * gx + gy * gy);
                 }
             return result;
         }

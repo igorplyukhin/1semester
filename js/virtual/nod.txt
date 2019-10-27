@@ -1,0 +1,21 @@
+M3 = -10;
+M4 = -5;
+@WHILE;
+LT(M4, M3);
+JMP(1, @LOWER);
+@ENDIF;
+GT(M4, M3);
+JMP(1, @GREATER);
+@ENDELSE;
+EQ(M3, M4);
+JMP(0, @WHILE);
+M4 -->;
+EXIT;
+
+@GREATER;
+M4 = M4 - M3;
+GOTO @ENDELSE;
+
+@LOWER;
+M3 = M3 - M4;
+GOTO @ENDIF;

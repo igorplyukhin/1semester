@@ -11,10 +11,7 @@ namespace Recognizer
         {
             var picWidth = original.GetLength(0);
             var picHeight = original.GetLength(1);
-            var pixelsCount = picWidth * picHeight;
-            var whitePixelsCount = (int) (pixelsCount * whitePixelsFraction);
-            var pixelsSortedByValue = original.Cast<double>().OrderByDescending(x => x).ToList();
-            var t = whitePixelsCount > 0 ? pixelsSortedByValue.ElementAt(whitePixelsCount - 1) : Double.MaxValue;
+            var t = CalcThresholdValue(original, whitePixelsFraction);
             var filteredPic = new double[picWidth, picHeight];
             for (var i = 0; i < picWidth; i++)
             {
@@ -25,6 +22,17 @@ namespace Recognizer
             }
 
             return filteredPic;
+        }
+
+        private static double CalcThresholdValue(double[,] original, double whitePixelsFraction)
+        {
+            var picWidth = original.GetLength(0);
+            var picHeight = original.GetLength(1);
+            var pixelsCount = picWidth * picHeight;
+            var whitePixelsCount = (int) (pixelsCount * whitePixelsFraction);
+            return whitePixelsCount > 0
+                ? original.Cast<double>().OrderByDescending(x => x).ElementAt(whitePixelsCount - 1)
+                : Double.MaxValue;
         }
     }
 }

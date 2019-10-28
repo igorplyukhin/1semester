@@ -1,9 +1,10 @@
 /*
-M0 - loop var; M1 = COMP; M2 = inputvalue; M3... = free var;
+M0 - loop var; M1 = bool; M2 = inputvalue; M3... = free var;
 */
-let fs = require('fs');
-let file = 'nod.txt';
-let inputValue = 10;
+const readline = require('readline')
+const fs = require('fs');
+let file = process.argv[2];
+let inputValue = process.argv[3];
 let source = fs.readFileSync(file, 'utf8');
 let lines = source.replace(/\r*\n*\s+/g, '').split(';');
 let stack = new Map();
@@ -26,6 +27,7 @@ for (let i = 0; i < lines.length - 1; i++) {
     }
     else if (line.includes('<--')) {
         PushToStack(stack, line.split('<--')[0], inputValue);
+        inputValue = process.argv[4];
     }
     else if (line.includes('LT')) {
         line = line.match(/\((.*?)\)/);
@@ -58,7 +60,6 @@ for (let i = 0; i < lines.length - 1; i++) {
         break;
     }
 }
-console.log(lines);
 
 function PushToStack(map, index, value) {
     if (!isNaN(value))

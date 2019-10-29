@@ -1,0 +1,5 @@
+/home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/bin/Debug/Passswords.exe
+/home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/bin/Debug/Passswords.pdb
+/home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/obj/Debug/Passswords.csprojAssemblyReference.cache
+/home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/obj/Debug/Passswords.exe
+/home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/obj/Debug/Passswords.pdb

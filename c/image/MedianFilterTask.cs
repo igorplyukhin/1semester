@@ -6,11 +6,11 @@ namespace Recognizer
 {
     internal static class MedianFilterTask
     {
-        static int[][] neighbours =
+        static Tuple<int, int>[] neighbours =
         {
-            new[] {-1, -1}, new[] {0, -1}, new[] {1, -1},
-            new[] {1, 0}, new[] {1, 1}, new[] {0, 1},
-            new[] {-1, 1}, new[] {-1, 0}, new[] {0, 0}
+            Tuple.Create(-1, -1), Tuple.Create(-1, 0), Tuple.Create(-1, 1), 
+            Tuple.Create(1, 1), Tuple.Create(1, 0), Tuple.Create(1, -1), 
+            Tuple.Create(0, 1), Tuple.Create(0, -1), Tuple.Create(0, 0)
         };
 
         public static double[,] MedianFilter(double[,] original)
@@ -36,9 +36,9 @@ namespace Recognizer
             var closePixels = new List<double>();
             foreach (var point in neighbours)
             {
-                var iNeighbor = i + point[0];
-                var jNeighbor = j + point[1];
-                if (IsCorrectIndex(iNeighbor, jNeighbor, picWidth, picHeight))
+                var iNeighbor = i + point.Item1;
+                var jNeighbor = j + point.Item2;
+                if (IsValidIndex(iNeighbor, jNeighbor, picWidth, picHeight))
                     closePixels.Add(original[iNeighbor, jNeighbor]);
             }
 
@@ -49,12 +49,12 @@ namespace Recognizer
         {
             closePixels.Sort();
             var closePixelsLen = closePixels.Count;
-            if (closePixelsLen % 2 == 1)
-                return closePixels[closePixelsLen / 2];
-            return (closePixels[closePixelsLen / 2 - 1] + closePixels[closePixelsLen / 2]) / 2;
+            return closePixelsLen % 2 == 1
+                ? closePixels[closePixelsLen / 2]
+                : (closePixels[closePixelsLen / 2 - 1] + closePixels[closePixelsLen / 2]) / 2;
         }
 
-        private static bool IsCorrectIndex(int i, int j, int width, int height)
+        private static bool IsValidIndex(int i, int j, int width, int height)
         {
             return i >= 0 && i < width && j >= 0 && j < height;
         }

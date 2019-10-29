@@ -1,7 +1,6 @@
 /*
 M0 - loop var; M1 = bool; M2 = inputvalue; M3... = free var;
 */
-const readline = require('readline')
 const fs = require('fs');
 let file = process.argv[2];
 let inputValue = process.argv[3];

@@ -1,5 +1,11 @@
-M3<--;
-M4<--;
+M3 <--;
+M4 <--;
+LT(M3,0);
+JMP(1, @MOD1);
+@ENDMOD1;
+LT(M4,0);
+JMP(1, @MOD2);
+@ENDMOD2;
 @WHILE;
 LT(M4, M3);
 JMP(1, @LOWER);
@@ -19,3 +25,11 @@ GOTO @ENDELSE;
 @LOWER;
 M3 = M3 - M4;
 GOTO @ENDIF;
+
+@MOD1;
+M3 = 0 - M3;
+GOTO @ENDMOD1;
+
+@MOD2;
+M4 = 0 - M4;
+GOTO @ENDMOD2;

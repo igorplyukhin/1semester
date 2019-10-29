@@ -70,7 +70,9 @@ namespace Recognizer
         {
             var bmp = (Bitmap) Image.FromFile("eurobot.bmp");
             var pixels = LoadPixels(bmp);
-
+            
+            UnitTest.Test1(pixels);
+            
             var form = new Form
             {
                 ClientSize = new Size(3 * ResizeRate * bmp.Width, 2 * ResizeRate * bmp.Height)

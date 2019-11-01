@@ -14,7 +14,7 @@ namespace RoutePlanning
         public static int[] FindBestCheckpointsOrder(Point[] checkpoints)
         {
             shortestDist = Double.MaxValue;
-            MakePermutations(new int[checkpoints.Length], 0, checkpoints);
+            MakePermutations(new int[checkpoints.Length], 1, checkpoints);
             return BestWay;
         }
 
@@ -32,7 +32,17 @@ namespace RoutePlanning
                 
                 return;
             }
-            
+
+            var currentDist = 0.0;
+            for (var i = 1; i < position; i++)
+            {
+                currentDist +=
+                    PointExtensions.DistanceTo(checkpoints[permutation[i - 1]], checkpoints[permutation[i]]);
+            }
+
+            if (currentDist >= shortestDist)
+                return;
+
             for (int i = 0; i < permutation.Length; i++)
             {
                 var index = Array.IndexOf(permutation, i, 0, position);

@@ -13,15 +13,15 @@ function Decode() {
     let top = (num[0] + num[1] + num[2] + num[4]) % 2;
     let rigth = (num[0] + num[1] + num[3] + num[5]) % 2;
     let left = (num[0] + num[2] + num[3] + num[6]) % 2;
-    let error = top.toString() + rigth.toString() + left.toString();
-    if (error === "000")
+    let errorBytes = top.toString() + rigth.toString() + left.toString();
+    if (errorBytes === "000")
         document.getElementById('decod_mes').value = message.substr(0, 4);
     else {
-        if (error != "011" && error != "100")
-            error = Invert(error);
-        num[parseInt(error, 2)] = (num[parseInt(error, 2)] + 1) % 2;
+        if (errorBytes != "011" && errorBytes != "100")
+            errorBytes = Invert(errorBytes);
+        num[parseInt(errorBytes, 2)] = (num[parseInt(errorBytes, 2)] + 1) % 2;
         document.getElementById('decod_mes').value = num.join('').substr(0, 4);
-        document.getElementById('error').innerText = 'One error was corrected';
+        document.getElementById('error').innerText = 'Error was corrected';
     }
 }
 

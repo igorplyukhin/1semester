@@ -3,3 +3,17 @@
 /home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/obj/Debug/Passswords.csprojAssemblyReference.cache
 /home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/obj/Debug/Passswords.exe
 /home/igor/Рабочий стол/repos/c/passwords/Passswords/Passswords/obj/Debug/Passswords.pdb
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\Passswords.exe
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\Passswords.pdb
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\obj\Debug\Passswords.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\obj\Debug\Passswords.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\obj\Debug\Passswords.exe
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\obj\Debug\Passswords.pdb
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\Microsoft.DotNet.InternalAbstractions.dll
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\Microsoft.Win32.Registry.dll
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\System.Diagnostics.FileVersionInfo.dll
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\System.ValueTuple.dll
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Igor\Desktop\repos\c\passwords\Passswords\Passswords\obj\Debug\Passswords.csproj.CopyComplete

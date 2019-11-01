@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 namespace Passswords
 {
     internal class Program
     {
         public static void Main(string[] args)
         {
-            CaseAlternatorTask.AlternateCharCases("abc");
+            CaseAlternatorTask.AlternateCharCases("abcgjsflfjdsaf");
         }
-        
+
         public class CaseAlternatorTask
         {
-            //Вызывать будут этот метод
             public static List<string> AlternateCharCases(string lowercaseWord)
             {
                 var result = new List<string>();
@@ -26,13 +27,16 @@ namespace Passswords
                     result.Add(new string(word));
                     return;
                 }
-
-                if (char.IsLetter(word[startIndex]))
+                
+                if (char.IsLetter(word[startIndex]) && char.ToLower(word[startIndex]) != char.ToUpper(word[startIndex]))
                 {
+                    word[startIndex] = char.ToLower(word[startIndex]);
+                    AlternateCharCases(word, startIndex + 1, result);
                     word[startIndex] = char.ToUpper(word[startIndex]);
                     AlternateCharCases(word, startIndex + 1, result);
                 }
-                
+                else 
+                    AlternateCharCases(word, startIndex + 1, result);
             }
         }
     }

@@ -23,3 +23,29 @@
 /home/igor/Рабочий стол/repos/c/route/obj/Debug/route-planning.csprojAssemblyReference.cache
 /home/igor/Рабочий стол/repos/c/route/obj/Debug/RoutePlanning.exe
 /home/igor/Рабочий стол/repos/c/route/obj/Debug/RoutePlanning.pdb
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\1-2.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\1-2x2.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\1-2x3.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\1-6.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\1-6.2.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\1-octo.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\2-10.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\2-2x5.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\2-3x3.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\2-9.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\3-11.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\3-11x1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\3-12.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\3-12.2.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\3-3x4.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\4-16.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\4-32.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\4-64.1.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\tests\4-big.txt
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\RoutePlanning.exe.config
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\RoutePlanning.exe
+C:\Users\Igor\Desktop\repos\c\route\bin\Debug\RoutePlanning.pdb
+C:\Users\Igor\Desktop\repos\c\route\obj\Debug\route-planning.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c\route\obj\Debug\route-planning.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c\route\obj\Debug\RoutePlanning.exe
+C:\Users\Igor\Desktop\repos\c\route\obj\Debug\RoutePlanning.pdb

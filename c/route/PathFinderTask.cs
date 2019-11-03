@@ -9,39 +9,28 @@ namespace RoutePlanning
     public static class PathFinderTask
     {
         private static double shortestDist = Double.MaxValue;
-        private static int[] BestWay;
+        private static int[] bestWay;
 
         public static int[] FindBestCheckpointsOrder(Point[] checkpoints)
         {
             shortestDist = Double.MaxValue;
             MakePermutations(new int[checkpoints.Length], 1, checkpoints);
-            return BestWay;
+            return bestWay;
         }
 
 
         private static void MakePermutations(int[] permutation, int position, Point[] checkpoints)
         {
-            if (position == permutation.Length)
-            {
-                var dist = PointExtensions.GetPathLength(checkpoints, permutation);
-                if (dist < shortestDist)
-                {
-                    shortestDist = dist;
-                    BestWay = (from elem in permutation select elem).ToArray();
-                }
-                
-                return;
-            }
-
-            var currentDist = 0.0;
-            for (var i = 1; i < position; i++)
-            {
-                currentDist +=
-                    PointExtensions.DistanceTo(checkpoints[permutation[i - 1]], checkpoints[permutation[i]]);
-            }
-
+            var currentDist = PointExtensions.GetPathLength(checkpoints, permutation.Take(position).ToArray());
             if (currentDist >= shortestDist)
                 return;
+
+            if (position == permutation.Length)
+            {
+                shortestDist = currentDist;
+                bestWay = permutation.ToArray();
+                return;
+            }
 
             for (int i = 0; i < permutation.Length; i++)
             {

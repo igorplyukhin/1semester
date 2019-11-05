@@ -12,3 +12,18 @@
 /home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/autocomplete.csproj.CopyComplete
 /home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/Autocomplete.exe
 /home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/Autocomplete.pdb
+C:\Users\Igor\Desktop\repos\c\autocomplete\bin\Debug\dic\adjectives.txt
+C:\Users\Igor\Desktop\repos\c\autocomplete\bin\Debug\dic\nouns.txt
+C:\Users\Igor\Desktop\repos\c\autocomplete\bin\Debug\dic\verbs.txt
+C:\Users\Igor\Desktop\repos\c\autocomplete\bin\Debug\Autocomplete.exe.config
+C:\Users\Igor\Desktop\repos\c\autocomplete\bin\Debug\Autocomplete.exe
+C:\Users\Igor\Desktop\repos\c\autocomplete\bin\Debug\Autocomplete.pdb
+C:\Users\Igor\Desktop\repos\c\autocomplete\bin\Debug\nunit.framework.dll
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\autocomplete.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\Autocomplete.AutocompleteForm.resources
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\Autocomplete.Properties.Resources.resources
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\autocomplete.csproj.GenerateResource.cache
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\autocomplete.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\autocomplete.csproj.CopyComplete
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\Autocomplete.exe
+C:\Users\Igor\Desktop\repos\c\autocomplete\obj\Debug\Autocomplete.pdb

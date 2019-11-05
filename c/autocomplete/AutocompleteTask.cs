@@ -8,13 +8,6 @@ namespace Autocomplete
 {
     internal class AutocompleteTask
     {
-        /// <returns>
-        /// Возвращает первую фразу словаря, начинающуюся с prefix.
-        /// </returns>
-        /// <remarks>
-        /// Эта функция уже реализована, она заработает, 
-        /// как только вы выполните задачу в файле LeftBorderTask
-        /// </remarks>
         public static string FindFirstByPrefix(IReadOnlyList<string> phrases, string prefix)
         {
             var index = LeftBorderTask.GetLeftBorderIndex(phrases, prefix, -1, phrases.Count) + 1;
@@ -23,32 +16,24 @@ namespace Autocomplete
             
             return null;
         }
-
-        /// <returns>
-        /// Возвращает первые в лексикографическом порядке count (или меньше, если их меньше count) 
-        /// элементов словаря, начинающихся с prefix.
-        /// </returns>
-        /// <remarks>Эта функция должна работать за O(log(n) + count)</remarks>
+        
         public static string[] GetTopByPrefix(IReadOnlyList<string> phrases, string prefix, int count)
         {
-            var l = new string[count];
-            var index = LeftBorderTask.GetLeftBorderIndex(phrases, prefix, -1, phrases.Count);
+			var leftIndex = LeftBorderTask.GetLeftBorderIndex(phrases, prefix, -1, phrases.Count);
+			var rightIndex = RightBorderTask.GetRightBorderIndex(phrases, prefix, -1, phrases.Count);
+			count = Math.Min(phrases.Count - 1 - leftIndex, Math.Min(count, rightIndex - leftIndex - 1));
+            var topByPrefix = new string[count];
             for (var i = 0; i < count; i++)
-            {
-                l[i] = phrases[index + 1];
-            }
+                topByPrefix[i] = phrases[leftIndex + i + 1];
 
-            return l;
+            return topByPrefix;
         }
-
-        /// <returns>
-        /// Возвращает количество фраз, начинающихся с заданного префикса
-        /// </returns>
+        
         public static int GetCountByPrefix(IReadOnlyList<string> phrases, string prefix)
         {
             var leftBoarder = LeftBorderTask.GetLeftBorderIndex(phrases, prefix, -1, phrases.Count);
-            //var rightBoarder = RightBorderTask.GetRightBorderIndex(phrases, prefix, -1, phrases.Count);
-            return 1;
+            var rightBoarder = RightBorderTask.GetRightBorderIndex(phrases, prefix, -1, phrases.Count);
+            return rightBoarder - leftBoarder - 1;
         }
     }
 

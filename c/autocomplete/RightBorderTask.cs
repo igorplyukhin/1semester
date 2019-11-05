@@ -11,15 +11,13 @@ namespace Autocomplete
             while (right != left + 1)
             {
                 var m = left + (right - left) / 2;
-                if (String.Compare(phrases[m],prefix, StringComparison.OrdinalIgnoreCase) < 0)
+                if (String.Compare(phrases[m],prefix, StringComparison.OrdinalIgnoreCase) < 0
+                    || phrases[m].StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
                     left = m;
                 else
                     right = m;
             }
 
-            while (right < phrases.Count 
-                   && phrases[right].StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-                right++;
             return right;
         }
     }

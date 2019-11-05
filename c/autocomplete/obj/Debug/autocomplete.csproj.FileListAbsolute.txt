@@ -1,0 +1,14 @@
+/home/igor/Рабочий стол/repos/c/autocomplete/bin/Debug/dic/adjectives.txt
+/home/igor/Рабочий стол/repos/c/autocomplete/bin/Debug/dic/nouns.txt
+/home/igor/Рабочий стол/repos/c/autocomplete/bin/Debug/dic/verbs.txt
+/home/igor/Рабочий стол/repos/c/autocomplete/bin/Debug/Autocomplete.exe.config
+/home/igor/Рабочий стол/repos/c/autocomplete/bin/Debug/Autocomplete.exe
+/home/igor/Рабочий стол/repos/c/autocomplete/bin/Debug/Autocomplete.pdb
+/home/igor/Рабочий стол/repos/c/autocomplete/bin/Debug/nunit.framework.dll
+/home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/autocomplete.csprojAssemblyReference.cache
+/home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/Autocomplete.AutocompleteForm.resources
+/home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/Autocomplete.Properties.Resources.resources
+/home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/autocomplete.csproj.GenerateResource.cache
+/home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/autocomplete.csproj.CopyComplete
+/home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/Autocomplete.exe
+/home/igor/Рабочий стол/repos/c/autocomplete/obj/Debug/Autocomplete.pdb

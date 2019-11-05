@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using NUnit.Framework;
 
 namespace Autocomplete
@@ -30,8 +31,14 @@ namespace Autocomplete
         /// <remarks>Эта функция должна работать за O(log(n) + count)</remarks>
         public static string[] GetTopByPrefix(IReadOnlyList<string> phrases, string prefix, int count)
         {
-            // тут стоит использовать написанный ранее класс LeftBorderTask
-            return null;
+            var l = new string[count];
+            var index = LeftBorderTask.GetLeftBorderIndex(phrases, prefix, -1, phrases.Count);
+            for (var i = 0; i < count; i++)
+            {
+                l[i] = phrases[index + 1];
+            }
+
+            return l;
         }
 
         /// <returns>
@@ -39,8 +46,9 @@ namespace Autocomplete
         /// </returns>
         public static int GetCountByPrefix(IReadOnlyList<string> phrases, string prefix)
         {
-            // тут стоит использовать написанные ранее классы LeftBorderTask и RightBorderTask
-            return -1;
+            var leftBoarder = LeftBorderTask.GetLeftBorderIndex(phrases, prefix, -1, phrases.Count);
+            //var rightBoarder = RightBorderTask.GetRightBorderIndex(phrases, prefix, -1, phrases.Count);
+            return 1;
         }
     }
 

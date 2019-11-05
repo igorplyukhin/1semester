@@ -8,28 +8,27 @@ namespace RoutePlanning
 {
     public static class PathFinderTask
     {
-        private static double shortestDist = Double.MaxValue;
-        private static int[] bestWay;
-
         public static int[] FindBestCheckpointsOrder(Point[] checkpoints)
         {
-            shortestDist = Double.MaxValue;
-            MakePermutations(new int[checkpoints.Length], 1, checkpoints);
+            var bestWay = new int[checkpoints.Length];
+            MakePermutations(new int[checkpoints.Length], 1,
+                checkpoints, Double.MaxValue, bestWay, 0.0);
             return bestWay;
         }
-
-
-        private static void MakePermutations(int[] permutation, int position, Point[] checkpoints)
+        
+        private static double MakePermutations(int[] permutation, int position,
+            Point[] checkpoints, double shortestDist, int[] bestWay, double currentDist)
         {
-            var currentDist = PointExtensions.GetPathLength(checkpoints, permutation.Take(position).ToArray());
+            currentDist += PointExtensions.DistanceTo(
+                checkpoints[permutation[position > 2 ? position - 2 : 0]]
+                , checkpoints[permutation[position - 1]]);
             if (currentDist >= shortestDist)
-                return;
+                return shortestDist;
 
             if (position == permutation.Length)
             {
                 shortestDist = currentDist;
-                bestWay = permutation.ToArray();
-                return;
+                permutation.CopyTo(bestWay,0);
             }
 
             for (int i = 0; i < permutation.Length; i++)
@@ -38,8 +37,10 @@ namespace RoutePlanning
                 if (index != -1)
                     continue;
                 permutation[position] = i;
-                MakePermutations(permutation, position + 1, checkpoints);
+                shortestDist = MakePermutations(permutation, position + 1
+                    , checkpoints, shortestDist, bestWay, currentDist);
             }
+            return shortestDist;
         }
     }
 }

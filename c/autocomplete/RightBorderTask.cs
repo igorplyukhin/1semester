@@ -10,12 +10,12 @@ namespace Autocomplete
         {				
             while (right != left + 1)
             {
-                var m = left + (right - left) / 2;
-                if (String.Compare(phrases[m],prefix, StringComparison.OrdinalIgnoreCase) < 0
-                    || phrases[m].StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-                    left = m;
+                var middle = left + (right - left) / 2;
+                if (String.Compare(phrases[middle],prefix, StringComparison.OrdinalIgnoreCase) < 0
+                    || phrases[middle].StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                    left = middle;
                 else
-                    right = m;
+                    right = middle;
             }
 
             return right;

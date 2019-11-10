@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace Autocomplete
@@ -11,9 +12,9 @@ namespace Autocomplete
             if (left == right - 1)
                 return left;
             var middle = left + (right - left) / 2;
-            if (String.Compare(phrases[middle], prefix, StringComparison.OrdinalIgnoreCase) < 0)
-                return GetLeftBorderIndex(phrases, prefix, middle, right);
-            return GetLeftBorderIndex(phrases, prefix, left, middle);
+            return String.Compare(phrases[middle], prefix, StringComparison.OrdinalIgnoreCase) < 0
+                ? GetLeftBorderIndex(phrases, prefix, middle, right)
+                : GetLeftBorderIndex(phrases, prefix, left, middle);
         }
     }
 }

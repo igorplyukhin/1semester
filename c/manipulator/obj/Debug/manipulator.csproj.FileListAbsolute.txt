@@ -9,3 +9,14 @@ C:\Users\Galina\Desktop\Приложения\SyncFolder\c\manipulator\obj\Debug\
 C:\Users\Galina\Desktop\Приложения\SyncFolder\c\manipulator\obj\Debug\manipulator.csproj.CopyComplete
 C:\Users\Galina\Desktop\Приложения\SyncFolder\c\manipulator\obj\Debug\Manipulator.exe
 C:\Users\Galina\Desktop\Приложения\SyncFolder\c\manipulator\obj\Debug\Manipulator.pdb
+C:\Users\Igor\Desktop\repos\c\manipulator\bin\Debug\Manipulator.exe.config
+C:\Users\Igor\Desktop\repos\c\manipulator\bin\Debug\Manipulator.exe
+C:\Users\Igor\Desktop\repos\c\manipulator\bin\Debug\Manipulator.pdb
+C:\Users\Igor\Desktop\repos\c\manipulator\bin\Debug\nunit.framework.dll
+C:\Users\Igor\Desktop\repos\c\manipulator\obj\Debug\manipulator.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c\manipulator\obj\Debug\Manipulation.Properties.Resources.resources
+C:\Users\Igor\Desktop\repos\c\manipulator\obj\Debug\manipulator.csproj.GenerateResource.cache
+C:\Users\Igor\Desktop\repos\c\manipulator\obj\Debug\manipulator.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c\manipulator\obj\Debug\manipulator.csproj.CopyComplete
+C:\Users\Igor\Desktop\repos\c\manipulator\obj\Debug\Manipulator.exe
+C:\Users\Igor\Desktop\repos\c\manipulator\obj\Debug\Manipulator.pdb

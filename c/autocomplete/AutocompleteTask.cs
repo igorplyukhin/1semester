@@ -21,7 +21,7 @@ namespace Autocomplete
         {
             var leftIndex = LeftBorderTask.GetLeftBorderIndex(phrases, prefix, -1, phrases.Count);
             var rightIndex = RightBorderTask.GetRightBorderIndex(phrases, prefix, -1, phrases.Count);
-            count = Math.Min(phrases.Count - 1 - leftIndex, Math.Min(count, rightIndex - leftIndex - 1));
+            count = Math.Min(count, rightIndex - leftIndex - 1);
             var topByPrefix = new string[count];
             for (var i = 0; i < count; i++)
                 topByPrefix[i] = phrases[leftIndex + i + 1];
@@ -68,23 +68,6 @@ namespace Autocomplete
         {
             var phrases = nonPaArsedPhrases.ToList().AsReadOnly();
             var actualCount = AutocompleteTask.GetCountByPrefix(phrases, prefix);
-            Assert.AreEqual(expectedCount, actualCount);
-        }
-
-        [Test]
-        public void TopByPrefix_IsEmpty_WhenNoPhrases()
-        {
-            var phrases = new List<string> {"a"}.AsReadOnly();
-            var actualTopWords = AutocompleteTask.GetTopByPrefix(phrases, "b", 10);
-            CollectionAssert.IsEmpty(actualTopWords);
-        }
-
-        [Test]
-        public void CountByPrefix_IsTotalCount_WhenEmptyPrefix()
-        {
-            var phrases = new List<string> {"a", "abc", "xyz"}.AsReadOnly();
-            var actualCount = AutocompleteTask.GetCountByPrefix(phrases, "");
-            var expectedCount = phrases.Count;
             Assert.AreEqual(expectedCount, actualCount);
         }
     }

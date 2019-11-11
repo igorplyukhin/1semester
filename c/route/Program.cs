@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -11,14 +11,15 @@ namespace RoutePlanning
     {
         private static void Main()
         {
-            RunTests(1, PathFinderTask.FindBestCheckpointsOrder);
-            RunTests(2, PathFinderTask.FindBestCheckpointsOrder);
+            //RunTests(1, PathFinderTask.FindBestCheckpointsOrder);
+            //RunTests(2, PathFinderTask.FindBestCheckpointsOrder);
             Console.WriteLine();
             Console.WriteLine("Большие тесты. Реализуйте отсечение перебора, чтобы они проходили быстро");
-            RunTests(3, PathFinderTask.FindBestCheckpointsOrder);
+            //RunTests(3, PathFinderTask.FindBestCheckpointsOrder);
+            RunTests(4, PathFinderTask.FindCheckpointsOrder, false);
         }
 
-        private static void RunTests(int difficulty, Func<Point[], int[]> solve)
+        private static void RunTests(int difficulty, Func<Point[], int[]> solve, bool pathsMustMatch = true)
         {
             foreach (var testFile in Directory.GetFiles("tests", difficulty + "-*.txt"))
             {
@@ -31,16 +32,16 @@ namespace RoutePlanning
                 sw.Stop();
                 var len = ps.GetPathLength(order);
                 var testName = Path.GetFileNameWithoutExtension(testFile);
-                var isPassed = IsPassed(len, order, answer, ps.Length);
+                var isPassed = IsPassed(len, order, answer, ps.Length, pathsMustMatch);
                 LogTest(testName, ps.Length, len, sw.Elapsed, answer, isPassed);
                 new PathForm(ps, order, isPassed, testName).ShowDialog();
             }
         }
 
-        public static bool IsPassed(double len, int[] order, double expectedLen, int size)
+        private static bool IsPassed(double len, int[] order, double expectedLen, int size, bool pathsMustMatch)
         {
-            return len < expectedLen + 1e-6 &&
-                   order.Distinct().OrderBy(x => x).SequenceEqual(Enumerable.Range(0, size));
+            return len < expectedLen + 1e-6
+                   && (!pathsMustMatch || order.Distinct().OrderBy(x => x).SequenceEqual(Enumerable.Range(0, size)));
         }
 
 

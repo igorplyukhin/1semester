@@ -1,43 +1,59 @@
-let str = "aabacaa";
+"use strict";
+let str = "aabcacaa";
 let substr = "aa";
 
-function BruteForceFindSubstrIndices(str, substr) {
+function BruteForceFindSubstrIndices(str, substr, count) {
     let indices = new Array();
-    let isSubstr;
-    for (let i = 0; i < str.length; i++) {
-        isSubstr = true;
+    for (let i = 0; i < str.length - substr.length + 1; i++) {
+        isNotSubstr:
         for (let j = 0; j < substr.length; j++) {
             if (str[i + j] != substr[j]) {
-                isSubstr = false;
-                break;
+                break isNotSubstr;
             }
         }
-        if (isSubstr)
-            indices.push(i);
+        indices.push(i);
+        if (count != 0 && indices.length === count)
+            break;
     }
-    return indices;
+    console.log("BruteForce Method:")
+    console.log(indices);
 }
 
-function GetHashSum(str, exponent){
+function GetHashSum(str, power) {
     let hashSum = 0;
     for (let i = 0; i < str.length; i++) {
-        hashSum += Math.pow(str[i].charCodeAt(),exponent);
+        hashSum += Math.pow(str[i].charCodeAt(), power);
     }
     return hashSum;
 }
 
-function HashSumFindSubstrIndices(str, substr) {
-    let hashSumStr = 0;
-    let hashSumSubstr = GetHashSum(substr, 1);
-    let isSubstr = true;
+function HashSumFindSubstrIndices(str, substr, power, count) {
+    let indices = new Array();
+    let hashSumSubstr = GetHashSum(substr, power);
     let collisions = 0;
-    
+    for (let i = 0; i < str.length - substr.length + 1; i++) {
+        if (GetHashSum(str.substr(i, substr.length), power) === hashSumSubstr) {
+            isNotSubstr:
+            for (let j = 0; j < substr.length; j++) {
+                if (str[i + j] != substr[j]) {
+                    collisions += 1;
+                    break isNotSubstr;
+                }
+            }
+            indices.push(i);
+            if (count != 0 && count === indices.length)
+                break;
+        }
+    }
+    power === 1
+        ? console.log("HashSum Method:")
+        : console.log("Square HashSum Method:");
+    console.log(indices);
+    console.log("Collisions: ", collisions);
 }
 
-function SquareHashSumFindSubstrIndices(str, substr) {
+BruteForceFindSubstrIndices(str, substr, 0);
+HashSumFindSubstrIndices(str, substr, 2, 0);
 
-}
 
-
-HashSumFindSubstrIndices(str, substr);
 

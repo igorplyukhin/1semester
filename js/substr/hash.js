@@ -18,26 +18,47 @@ function BruteForceFindSubstrIndices(str, substr) {
     return indices;
 }
 
-function GetHashSum(str, exponent){
+function GetHashSum(str, exponent) {
     let hashSum = 0;
     for (let i = 0; i < str.length; i++) {
-        hashSum += Math.pow(str[i].charCodeAt(),exponent);
+        hashSum += Math.pow(str[i].charCodeAt(), exponent);
     }
     return hashSum;
 }
 
-function HashSumFindSubstrIndices(str, substr) {
-    let hashSumStr = 0;
-    let hashSumSubstr = GetHashSum(substr, 1);
-    let isSubstr = true;
+
+function RabinKarpFindSubstrIndices(str, substr, count) {
+    let indices = new Array();
     let collisions = 0;
-    
+    let substrHash = CalcRabinKarpHash(substr);
+    let currenttHash = CalcRabinKarpHash(str.substr(0, substr.length));
+    isNotSubstr:
+    for (let i = 0; i < str.length - substr.length; i++) {
+        if (currenttHash == substrHash) {
+            for (let j = 0; j < substr.length; j++) {
+                if (str[i + j] != substr[j]) {  
+                collisions++;          
+                break isNotSubstr;
+                }
+            }
+            indices.push(i);
+        }
+        currenttHash = 2*(currenttHash - str[i].charCodeAt()*Math.pow(2, substr.length - 1)) + str[i+substr.length].charCodeAt();
+    }
+    console.log(indices);
+    console.log(collisions);
 }
 
-function SquareHashSumFindSubstrIndices(str, substr) {
-
+function CalcRabinKarpHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash += str[i].charCodeAt() * Math.pow(2, str.length - i - 1);
+    }
+    return hash;
 }
 
 
-HashSumFindSubstrIndices(str, substr);
+RabinKarpFindSubstrIndices(str,substr);
+
+
 

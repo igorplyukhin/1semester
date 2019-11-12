@@ -14,7 +14,7 @@ namespace Manipulation
             var wristPos = CalcCoordinates(currentAngle, Manipulator.Forearm, elbowPos.X, elbowPos.Y);
             currentAngle += wrist + Math.PI;
             var palmEndPos = CalcCoordinates(currentAngle, Manipulator.Palm, wristPos.X, wristPos.Y);
-            return new []
+            return new[]
             {
                 elbowPos,
                 wristPos,
@@ -29,6 +29,9 @@ namespace Manipulation
     [TestFixture]
     public class AnglesToCoordinatesTask_Tests
     {
+        [TestCase(0, 0, 0, 90, 0)]
+        [TestCase(Math.PI / 2, -Math.PI, -Math.PI, 0, 330)]
+        [TestCase(Math.PI * 8, Math.PI * 8, Math.PI * 8, 90, 0)]
         [TestCase(-Math.PI / 2, Math.PI / 2, -Math.PI / 2, -120, -210)]
         [TestCase(0, Math.PI, Math.PI, 330, 0)]
         [TestCase(Math.PI / 2, Math.PI / 2, Math.PI, 180, 150)]

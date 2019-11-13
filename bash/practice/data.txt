@@ -1,0 +1,3 @@
+petya 5.0
+grisha 0.0
+loh 228.43141

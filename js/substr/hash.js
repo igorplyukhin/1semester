@@ -1,19 +1,26 @@
 "use strict";
 const fs = require('fs');
-let str = fs.readFileSync(process.argv[process.argv.length - 2], 'utf8');
-let substr = fs.readFileSync(process.argv[process.argv.length - 1], 'utf8');
+let strFile = process.argv[process.argv.length - 2];
+let substrFile = process.argv[process.argv.length - 1];
+if (!fs.existsSync(strFile) || !fs.existsSync(substrFile)) {
+    console.log("File doesn't exist");
+    return;
+}
+let str = fs.readFileSync(strFile, 'utf8');
+let substr = fs.readFileSync(substrFile, 'utf8');
 let method = process.argv[process.argv.length - 3];
 let showCollisions = false;
 let showTime = false;
 let count = 0;
 let keys = process.argv.slice(2, -3);
+let data;
 for (let i = 0; i < keys.length; i++) {
     switch (keys[i]) {
         case "-c":
             showCollisions = true;
             break;
         case "-n":
-            count = parseInt(keys[i + 1]);
+            count = Math.max(parseInt(keys[i + 1]), 0);
             break;
         case "-t":
             showTime = true;
@@ -25,30 +32,34 @@ console.time('Elapsed time');
 
 switch (method) {
     case "b":
-        BruteForceFindSubstrIndices(str, substr, count);
+        data = BruteForceFindSubstrIndices(str, substr);
+        console.log("Bruteforce method:");
         break;
     case "h1":
-        HashSumFindSubstrIndices(str, substr, 1, count, showCollisions);
+        data = HashSumFindSubstrIndices(str, substr, 1);
+        console.log("Hashsum method:");
         break;
     case "h2":
-        HashSumFindSubstrIndices(str, substr, 2, count, showCollisions);
+        data = HashSumFindSubstrIndices(str, substr, 2);
+        console.log("SquareHashsum method:");
         break;
     case "h3":
-        RabinKarpFindSubstrIndices(str, substr, count, showCollisions);
+        data = RabinKarpFindSubstrIndices(str, substr);
+        console.log("RabinCarp mehod:");
         break;
+    default:
+        console.log(`Uncknown modifier \'${method}\'`);
+        return;
 }
-
+if (count > 0)
+    data.indices = data.indices.slice(0, count);
+console.log(data.indices.join());
+if (showCollisions && method != "b")
+    console.log("Collisions:", data.collisions);
 if (showTime)
     console.timeEnd('Elapsed time');
 
-//str = "aabcacaa";
-//substr = "aa";
-//BruteForceFindSubstrIndices(str, substr, 1);
-//RabinKarpFindSubstrIndices(str, substr);
-//HashSumFindSubstrIndices(str, substr, 2, 0);
-//HashSumFindSubstrIndices(str, substr, 1);
-
-function BruteForceFindSubstrIndices(str, substr, count) {
+function BruteForceFindSubstrIndices(str, substr) {
     let indices = new Array();
     isNotSubstr:
     for (let i = 0; i < str.length - substr.length + 1; i++) {
@@ -58,11 +69,10 @@ function BruteForceFindSubstrIndices(str, substr, count) {
             }
         }
         indices.push(i);
-        if (count > 0 && indices.length === count)
-            break;
     }
-    console.log("BruteForce Method:")
-    console.log(indices.join());
+    return {
+        indices
+    };
 }
 
 function GetHashSum(str, power) {
@@ -73,7 +83,7 @@ function GetHashSum(str, power) {
     return hashSum;
 }
 
-function HashSumFindSubstrIndices(str, substr, power, count, showCollisions) {
+function HashSumFindSubstrIndices(str, substr, power) {
     let indices = new Array();
     let hashSumSubstr = GetHashSum(substr, power);
     let collisions = 0;
@@ -87,16 +97,12 @@ function HashSumFindSubstrIndices(str, substr, power, count, showCollisions) {
                 }
             }
             indices.push(i);
-            if (count != 0 && count === indices.length)
-                break;
         }
     }
-    power === 1
-        ? console.log("HashSum Method:")
-        : console.log("Square HashSum Method:");
-    console.log(indices.join());
-    if (showCollisions)
-        console.log("Collisions: ", collisions);
+    return {
+        indices,
+        collisions
+    };
 }
 
 function CalcRabinKarpHash(str) {
@@ -107,7 +113,7 @@ function CalcRabinKarpHash(str) {
     return hash;
 }
 
-function RabinKarpFindSubstrIndices(str, substr, count, showCollisions) {
+function RabinKarpFindSubstrIndices(str, substr) {
     let indices = new Array();
     let collisions = 0;
     let substrHash = CalcRabinKarpHash(substr);
@@ -124,14 +130,11 @@ function RabinKarpFindSubstrIndices(str, substr, count, showCollisions) {
             indices.push(i);
         }
         if (i + substr.length <= str.length - 1)
-            currenttHash = 2 * (currenttHash - str[i].charCodeAt() * Math.pow(2, substr.length - 1)) + str[i + substr.length].charCodeAt();
-        if (count != 0 && count === indices.length)
-            break;
+            currenttHash = 2 * (currenttHash - str[i].charCodeAt() * Math.pow(2, substr.length - 1))
+                + str[i + substr.length].charCodeAt();
     }
-    console.log("RabinKarp Method:");
-    console.log(indices.join());
-    if (showCollisions)
-        console.log("Collisions: ", collisions);
+    return {
+        indices,
+        collisions
+    };
 }
-
-

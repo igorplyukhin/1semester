@@ -22,7 +22,7 @@ namespace Manipulation
 
         public static void KeyDown(Form form, KeyEventArgs key)
         {
-            var angle = Math.PI / 20;
+            var angle = Math.PI / 30;
             var isChanged = true;
             if (key.KeyCode == Keys.Q)
                 Shoulder += angle;
@@ -78,8 +78,10 @@ namespace Manipulation
             DrawReachableZone(graphics, ReachableAreaBrush, UnreachableAreaBrush, shoulderPos, joints);
             for (var i = 0; i < windowJoints.Count - 1; i++)
             {
-                graphics.DrawLine(ManipulatorPen, windowJoints[i].X, windowJoints[i].Y, windowJoints[i + 1].X, windowJoints[i + 1].Y);
-                graphics.FillEllipse(JointBrush, windowJoints[i].X + rectSize, windowJoints[i].Y + rectSize, -2 * rectSize, -2 * rectSize);
+                graphics.DrawLine(ManipulatorPen, windowJoints[i].X, windowJoints[i].Y, 
+                    windowJoints[i + 1].X, windowJoints[i + 1].Y);
+                graphics.FillEllipse(JointBrush, windowJoints[i].X + rectSize, windowJoints[i].Y + rectSize, 
+                    -2 * rectSize, -2 * rectSize);
             }
         }
 

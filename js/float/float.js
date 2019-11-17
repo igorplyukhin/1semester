@@ -1,4 +1,8 @@
 'use strict';
+const MantissaSuffix = "00000000000000000000000";
+const ShiftPrefix = "00000000";
+const MantissaLength = 23;
+const ShiftOffset = 127;
 
 function BinaryNumber(sign, shift, mantissa) {
     this.sign = sign;
@@ -8,15 +12,21 @@ function BinaryNumber(sign, shift, mantissa) {
 
 function ParseNumber(str) {
     let parts = str.split('.');
-    let intPart = parts[0] === undefined ? 0n : BigInt(parts[0]);
-    let fracPart = parts[1] === undefined ? 0n : BigInt(parts[1]);
+    parts[0] = parts[0] === undefined ? '0' : parts[0];
+    parts[1] = parts[1] === undefined ? '0' : parts[1];
+    let intPart = BigInt(parts[0]);
+    let fracPart = BigInt(parts[1]);
+    let lostZeros = parts[1].length - CalcNumLength(fracPart);
     return {
         intPart,
-        fracPart
+        fracPart,
+        lostZeros
     }
 }
 
 function IntToBinary(num) {
+    if (num === 0n)
+        return "0";
     let binaryNum = "";
     while (num > 0n) {
         binaryNum = (num % 2n).toString() + binaryNum;
@@ -28,7 +38,7 @@ function IntToBinary(num) {
 function FracToBinary(num) {
     let binaryNum = "";
     let i = 0;
-    while (num > 0 && i != 20) {
+    while (num > 0 && i != 40) { 
         i++;
         let oldLen = CalcNumLength(num);
         num = 2n * num;
@@ -62,16 +72,28 @@ function RaiseToPow(num, pow) {
     return ans;
 }
 
+function CalcShift(intPart, fracPart, lostZeros) {
+    if (intPart != "0")
+        return IntToBinary(BigInt(intPart.length - 1 + ShiftOffset));
+    else {
+        let strWithoutZeros = fracPart.replace(/^0+/, ''); //Delete first zeros
+        return IntToBinary(BigInt(strWithoutZeros.length - fracPart.length - 1 - lostZeros + ShiftOffset));
+    }
+}
+
 function GetBinaryNumber(str) {
     let binaryNumber = new BinaryNumber;
     binaryNumber.sign = str[0] === '-' ? 1 : 0;
     str = str[0] === '-' ? str.substring(1) : str;
     let parsedNumber = ParseNumber(str);
-    binaryNumber.mantissa = (IntToBinary(parsedNumber.intPart) + FracToBinary(parsedNumber.fracPart)).substring(1);
+    let binIntPart = IntToBinary(parsedNumber.intPart);
+    let binFracPart = FracToBinary(parsedNumber.fracPart)
+    binaryNumber.shift = (ShiftPrefix + CalcShift(binIntPart, binFracPart, parsedNumber.lostZeros)).slice(-8);
+    binaryNumber.mantissa = (binIntPart + binFracPart + MantissaSuffix).replace(/^0+/, '').substr(1, MantissaLength);
 
     return binaryNumber;
 }
 
 
-console.log(GetBinaryNumber("-6.75"));
+console.log(GetBinaryNumber("0"));
 

@@ -14,6 +14,9 @@ namespace Manipulation
         public static double Wrist = 2 * Math.PI / 3;
         public static double Elbow = 3 * Math.PI / 4;
         public static double Shoulder = Math.PI / 2;
+        public static double RotationAngle = Math.PI / 30;
+        public static int RectSize = 10;
+
 
         public static Brush UnreachableAreaBrush = new SolidBrush(Color.FromArgb(255, 255, 230, 230));
         public static Brush ReachableAreaBrush = new SolidBrush(Color.FromArgb(255, 230, 255, 230));
@@ -22,21 +25,22 @@ namespace Manipulation
 
         public static void KeyDown(Form form, KeyEventArgs key)
         {
-            var angle = Math.PI / 30;
             var isChanged = true;
             if (key.KeyCode == Keys.Q)
-                Shoulder += angle;
+                Shoulder += RotationAngle;
             else if (key.KeyCode == Keys.A)
-                Shoulder -= angle;
+                Shoulder -= RotationAngle;
             else if (key.KeyCode == Keys.W)
-                Elbow += angle;
+                Elbow += RotationAngle;
             else if (key.KeyCode == Keys.S)
-                Elbow -= angle;
+                Elbow -= RotationAngle;
             else
                 isChanged = false;
             if (isChanged)
-                Wrist = - Alpha - Shoulder - Elbow;
-            form.Invalidate();
+            {
+                Wrist = -Alpha - Shoulder - Elbow;
+                form.Invalidate();
+            }
         }
 
         public static void MouseMove(Form form, MouseEventArgs e)
@@ -67,8 +71,7 @@ namespace Manipulation
         {
             var joints = AnglesToCoordinatesTask.GetJointPositions(Shoulder, Elbow, Wrist);
             var windowJoints = joints.Select(x => ConvertMathToWindow(x, shoulderPos)).ToList();
-            windowJoints.Insert(0,shoulderPos);
-            var rectSize = 10;
+            windowJoints.Insert(0, shoulderPos);
             graphics.DrawString(
                 $"X={X:0}, Y={Y:0}, Alpha={Alpha:0.00}",
                 new Font(SystemFonts.DefaultFont.FontFamily, 12),
@@ -78,10 +81,11 @@ namespace Manipulation
             DrawReachableZone(graphics, ReachableAreaBrush, UnreachableAreaBrush, shoulderPos, joints);
             for (var i = 0; i < windowJoints.Count - 1; i++)
             {
-                graphics.DrawLine(ManipulatorPen, windowJoints[i].X, windowJoints[i].Y, 
-                    windowJoints[i + 1].X, windowJoints[i + 1].Y);
-                graphics.FillEllipse(JointBrush, windowJoints[i].X + rectSize, windowJoints[i].Y + rectSize, 
-                    -2 * rectSize, -2 * rectSize);
+                var currentPoint = windowJoints[i];
+                var nextPoint = windowJoints[i + 1];
+                graphics.DrawLine(ManipulatorPen, currentPoint, nextPoint);
+                graphics.FillEllipse(JointBrush, currentPoint.X + RectSize, currentPoint.Y + RectSize,
+                    -2 * RectSize, -2 * RectSize);
             }
         }
 

@@ -9,18 +9,23 @@ namespace Manipulation
     {
         public static double[] MoveManipulatorTo(double x, double y, double alpha)
         {
-            var xWristPosition = x - Manipulator.Palm * Math.Cos(alpha);
-            var yWristPosition = y + Manipulator.Palm * Math.Sin(alpha);
-            var shoulderWristLength =
-                Math.Sqrt(xWristPosition * xWristPosition + yWristPosition * yWristPosition);
-            var elbow = TriangleTask.GetABAngle(Manipulator.UpperArm, Manipulator.Forearm, shoulderWristLength);
-            var shoulder = TriangleTask.GetABAngle(Manipulator.UpperArm, shoulderWristLength, Manipulator.Forearm)
-                           + Math.Atan2(yWristPosition, xWristPosition);
+            var xWristPos = x - Manipulator.Palm * Math.Cos(alpha);
+            var yWristPos = y + Manipulator.Palm * Math.Sin(alpha);
+            var shoulderWristLength = Math.Sqrt(xWristPos * xWristPos + yWristPos * yWristPos);
+            var elbow = CalcElbowAngle(shoulderWristLength);
+            var shoulder = CalcShoulderAngle(shoulderWristLength, xWristPos, yWristPos);
             var wrist = -alpha - elbow - shoulder;
             return double.IsNaN(wrist) || double.IsNaN(elbow) || double.IsNaN(shoulder)
                 ? new[] {double.NaN, double.NaN, double.NaN}
                 : new[] {shoulder, elbow, wrist};
         }
+
+        public static double CalcElbowAngle(double shoulderWristLength) =>
+            TriangleTask.GetABAngle(Manipulator.UpperArm, Manipulator.Forearm, shoulderWristLength);
+
+        public static double CalcShoulderAngle(double shoulderWristLength, double xWristPos, double yWristPos) =>
+            TriangleTask.GetABAngle(Manipulator.UpperArm, shoulderWristLength, Manipulator.Forearm)
+            + Math.Atan2(yWristPos, xWristPos);
     }
 
     [TestFixture]
@@ -38,13 +43,11 @@ namespace Manipulation
                 var actualAngles = ManipulatorTask.MoveManipulatorTo(x, y, alpha);
                 if (!actualAngles.Contains(double.NaN))
                 {
-                    var actualCoordinates =
+                    var actualCoordinates = 
                         AnglesToCoordinatesTask.GetJointPositions(actualAngles[0], actualAngles[1], actualAngles[2]);
                     Assert.AreEqual(x, actualCoordinates[2].X, 1e-3, "X");
                     Assert.AreEqual(y, actualCoordinates[2].Y, 1e-3, "Y");
                 }
-                else
-                    Assert.Pass();
             }
         }
     }

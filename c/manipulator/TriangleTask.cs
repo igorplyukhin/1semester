@@ -7,10 +7,13 @@ namespace Manipulation
     {
         public static double GetABAngle(double a, double b, double c)
         {
-            return a > 0 && b > 0 && c >= 0 && a + b > c && a + c >= b && b + c >= a
+            return CheckTriangleExistance(a, b, c)
                 ? Math.Acos((a * a + b * b - c * c) / (2 * b * a))
                 : double.NaN;
         }
+
+        public static bool CheckTriangleExistance(double a, double b, double c) =>
+            a > 0 && b > 0 && c >= 0 && a + b > c && a + c >= b && b + c >= a;
     }
 
     [TestFixture]

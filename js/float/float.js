@@ -3,6 +3,24 @@ const MantissaSuffix = "00000000000000000000000";
 const ShiftPrefix = "00000000";
 const MantissaLength = 23;
 const ShiftOffset = 127;
+const floatRegExp = /\d*\.?\d*/;
+
+console.log(Main("-9999999999999999999999999999999999999999999"));
+
+function Main(str) { 
+    let binaryNumber = new BinaryNumber;
+    binaryNumber.sign = str[0] === '-' ? 1 : 0;
+    str = str[0] === '-' ? str.substring(1) : str;
+    let parsedNumber = ParseNumber(str);
+    if (parsedNumber.intPart > 340282346638528859811704183484516925439n) { //Infinity
+        binaryNumber.shift = "11111111";
+        binaryNumber.mantissa = MantissaSuffix;
+        return binaryNumber;
+    }
+    //else if (str.) {
+
+    //}
+}
 
 function BinaryNumber(sign, shift, mantissa) {
     this.sign = sign;
@@ -94,6 +112,4 @@ function GetBinaryNumber(str) {
     return binaryNumber;
 }
 
-
-console.log(GetBinaryNumber("0"));
 

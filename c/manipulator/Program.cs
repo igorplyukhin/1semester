@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Manipulation
@@ -8,10 +11,22 @@ namespace Manipulation
     public class Program
     {
         public static Form Form;
+        
+        public static List<DirectoryInfo> GetAlbums(List<FileInfo> files)
+        {
+            var dirs = new List<DirectoryInfo>();
+            foreach (var file in files.Where(file => !dirs.Exists(x => x.FullName == file.Directory.FullName) 
+                                                     && (file.Extension == ".mp3" || file.Extension == ".wav")))
+            {
+                dirs.Add(file.Directory);
+            }
+            return dirs; 
+        }
 
         [STAThread]
         private static void Main()
         {
+            
             InitializeForm();
             Application.Run(Form);
         }

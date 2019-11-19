@@ -1,0 +1,5 @@
+/home/igor/Рабочий стол/repos/c/lib/bin/Debug/library.dll
+/home/igor/Рабочий стол/repos/c/lib/bin/Debug/library.pdb
+/home/igor/Рабочий стол/repos/c/lib/obj/Debug/library.csprojAssemblyReference.cache
+/home/igor/Рабочий стол/repos/c/lib/obj/Debug/library.dll
+/home/igor/Рабочий стол/repos/c/lib/obj/Debug/library.pdb

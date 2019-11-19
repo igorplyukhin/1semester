@@ -1,0 +1,11 @@
+/home/igor/Рабочий стол/repos/c/painting/bin/Debug/GeometryPainting.exe.config
+/home/igor/Рабочий стол/repos/c/painting/bin/Debug/GeometryPainting.exe
+/home/igor/Рабочий стол/repos/c/painting/bin/Debug/GeometryPainting.pdb
+/home/igor/Рабочий стол/repos/c/painting/bin/Debug/library.dll
+/home/igor/Рабочий стол/repos/c/painting/bin/Debug/library.pdb
+/home/igor/Рабочий стол/repos/c/painting/obj/Debug/GeometryPainting.csprojAssemblyReference.cache
+/home/igor/Рабочий стол/repos/c/painting/obj/Debug/GeometryPainting.Properties.Resources.resources
+/home/igor/Рабочий стол/repos/c/painting/obj/Debug/GeometryPainting.csproj.GenerateResource.cache
+/home/igor/Рабочий стол/repos/c/painting/obj/Debug/GeometryPainting.csproj.CopyComplete
+/home/igor/Рабочий стол/repos/c/painting/obj/Debug/GeometryPainting.exe
+/home/igor/Рабочий стол/repos/c/painting/obj/Debug/GeometryPainting.pdb

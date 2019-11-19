@@ -25,22 +25,25 @@ namespace Manipulation
 
         public static void KeyDown(Form form, KeyEventArgs key)
         {
-            var isChanged = true;
-            if (key.KeyCode == Keys.Q)
-                Shoulder += RotationAngle;
-            else if (key.KeyCode == Keys.A)
-                Shoulder -= RotationAngle;
-            else if (key.KeyCode == Keys.W)
-                Elbow += RotationAngle;
-            else if (key.KeyCode == Keys.S)
-                Elbow -= RotationAngle;
-            else
-                isChanged = false;
-            if (isChanged)
+            switch (key.KeyCode)
             {
-                Wrist = -Alpha - Shoulder - Elbow;
-                form.Invalidate();
+                case Keys.Q:
+                    Shoulder += RotationAngle;
+                    break;
+                case Keys.A:
+                    Shoulder -= RotationAngle;
+                    break;
+                case Keys.W:
+                    Elbow += RotationAngle;
+                    break;
+                case Keys.S:
+                    Elbow -= RotationAngle;
+                    break;
+                default:
+                    return;
             }
+            Wrist = -Alpha - Shoulder - Elbow;
+            form.Invalidate();
         }
 
         public static void MouseMove(Form form, MouseEventArgs e)
@@ -62,9 +65,12 @@ namespace Manipulation
         public static void UpdateManipulator()
         {
             var newAngles = ManipulatorTask.MoveManipulatorTo(X, Y, Alpha);
-            Shoulder = !double.IsNaN(newAngles[0]) ? newAngles[0] : Shoulder;
-            Elbow = !double.IsNaN(newAngles[1]) ? newAngles[1] : Elbow;
-            Wrist = !double.IsNaN(newAngles[2]) ? newAngles[2] : Wrist;
+            if (!newAngles.Contains(double.NaN))
+            {
+                Shoulder = newAngles[0];
+                Elbow = newAngles[1];
+                Wrist = newAngles[2];
+            }
         }
 
         public static void DrawManipulator(Graphics graphics, PointF shoulderPos)

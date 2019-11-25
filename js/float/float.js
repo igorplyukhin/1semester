@@ -3,23 +3,35 @@ const MantissaSuffix = "00000000000000000000000";
 const ShiftPrefix = "00000000";
 const MantissaLength = 23;
 const ShiftOffset = 127;
-const floatRegExp = /\d*\.?\d*/;
+const floatRegExp = /[^/.0-9]/gim;
 
-console.log(Main("-9999999999999999999999999999999999999999999"));
+console.log(GetBinaryNumber('dfh'));
 
-function Main(str) { 
+function GetBinaryNumber(str) {
     let binaryNumber = new BinaryNumber;
     binaryNumber.sign = str[0] === '-' ? 1 : 0;
     str = str[0] === '-' ? str.substring(1) : str;
+    if (str.replace(floatRegExp,'') === "") {//NaN
+        binaryNumber.shift = "11111111";
+        binaryNumber.mantissa = ('1' + MantissaSuffix).substr(0,MantissaLength);
+
+        return binaryNumber;
+    }
     let parsedNumber = ParseNumber(str);
     if (parsedNumber.intPart > 340282346638528859811704183484516925439n) { //Infinity
         binaryNumber.shift = "11111111";
         binaryNumber.mantissa = MantissaSuffix;
+
         return binaryNumber;
     }
-    //else if (str.) {
 
-    //}
+    
+    let binIntPart = IntToBinary(parsedNumber.intPart);
+    let binFracPart = FracToBinary(parsedNumber.fracPart)
+    binaryNumber.shift = (ShiftPrefix + CalcShift(binIntPart, binFracPart, parsedNumber.lostZeros)).slice(-8);
+    binaryNumber.mantissa = (binIntPart + binFracPart + MantissaSuffix).replace(/^0+/, '').substr(1, MantissaLength);
+
+    return binaryNumber;
 }
 
 function BinaryNumber(sign, shift, mantissa) {
@@ -99,17 +111,5 @@ function CalcShift(intPart, fracPart, lostZeros) {
     }
 }
 
-function GetBinaryNumber(str) {
-    let binaryNumber = new BinaryNumber;
-    binaryNumber.sign = str[0] === '-' ? 1 : 0;
-    str = str[0] === '-' ? str.substring(1) : str;
-    let parsedNumber = ParseNumber(str);
-    let binIntPart = IntToBinary(parsedNumber.intPart);
-    let binFracPart = FracToBinary(parsedNumber.fracPart)
-    binaryNumber.shift = (ShiftPrefix + CalcShift(binIntPart, binFracPart, parsedNumber.lostZeros)).slice(-8);
-    binaryNumber.mantissa = (binIntPart + binFracPart + MantissaSuffix).replace(/^0+/, '').substr(1, MantissaLength);
-
-    return binaryNumber;
-}
 
 

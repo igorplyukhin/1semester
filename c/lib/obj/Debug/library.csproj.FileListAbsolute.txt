@@ -3,3 +3,9 @@
 /home/igor/Рабочий стол/repos/c/lib/obj/Debug/library.csprojAssemblyReference.cache
 /home/igor/Рабочий стол/repos/c/lib/obj/Debug/library.dll
 /home/igor/Рабочий стол/repos/c/lib/obj/Debug/library.pdb
+C:\Users\Igor\Desktop\repos\c\lib\bin\Debug\library.dll
+C:\Users\Igor\Desktop\repos\c\lib\bin\Debug\library.pdb
+C:\Users\Igor\Desktop\repos\c\lib\obj\Debug\library.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c\lib\obj\Debug\library.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c\lib\obj\Debug\library.dll
+C:\Users\Igor\Desktop\repos\c\lib\obj\Debug\library.pdb

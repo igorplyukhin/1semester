@@ -52,6 +52,8 @@ namespace GeometryPainting
             form.FormBorderStyle = FormBorderStyle.FixedDialog;
             form.MaximizeBox = false;
             Application.Run(form);
+            var table = SegmentExtentions.colors;
+            GC.Collect();
         }
     }
 }

@@ -1,6 +1,43 @@
 "use strict";
+const fs = require("fs");
 
-console.log(FindSubstrings("abaxabaz", "sz"));
+let strFile = process.argv[process.argv.length - 2];
+let substrFile = process.argv[process.argv.length - 1];
+let keys = process.argv.slice(2,-2);
+if (!fs.existsSync(strFile) || !fs.existsSync(substrFile)) {
+    console.log("Check files");
+    return;
+}
+let showTime = false;
+let showTable = false;
+let indicesCount = 0;
+for (let i=0; i < keys.length; i++) {
+    switch (keys[i]){
+        case "-t":
+            showTime = true;
+            break;
+        case "-a":
+            showTable = true;
+            break;
+        case "-n":
+            indicesCount = Math.max(parseInt(keys[i + 1]), 0);
+            break;
+    }
+}
+
+let str = fs.readFileSync(strFile, "utf8");
+let substr = fs.readFileSync(substrFile, "utf8");
+console.time("Elapsed time");
+let indicesAndTable = FindSubstrings(str,substr);
+if (showTime)
+    console.timeEnd("Elapsed time");
+
+if (indicesCount > 0)
+    indicesAndTable.indices = indicesAndTable.indices.slice(0,indicesCount);
+
+console.log(indicesAndTable.indices.join());
+if (showTable)
+    console.log(indicesAndTable.table);
 
 function BuildTable(str) {
     let len = str.length;
@@ -29,17 +66,17 @@ function BuildTable(str) {
 function FindSubstrings(str, substr) {
     let table = BuildTable(substr);
     let currentState = 0;
-    let indecies = new Array();
+    let indices = new Array();
     for (let i = 0; i < str.length; i++) {
         currentState = table[currentState][str[i]] === undefined
             ? 0
             : table[currentState][str[i]];
         if (currentState === substr.length)
-            indecies.push(i - substr.length + 1)
+            indices.push(i - substr.length + 1)
     }
 
     return {
-        indecies,
+        indices,
         table
     };
 }

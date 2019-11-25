@@ -51,13 +51,14 @@ switch (method) {
         console.log(`Uncknown modifier \'${method}\'`);
         return;
 }
+if (showTime)
+    console.timeEnd('Elapsed time');
 if (count > 0)
     data.indices = data.indices.slice(0, count);
 console.log(data.indices.join());
 if (showCollisions && method != "b")
     console.log("Collisions:", data.collisions);
-if (showTime)
-    console.timeEnd('Elapsed time');
+
 
 function BruteForceFindSubstrIndices(str, substr) {
     let indices = new Array();

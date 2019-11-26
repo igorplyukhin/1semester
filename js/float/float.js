@@ -1,3 +1,10 @@
-const convertions = require('./convert');
+'use strict'
+const cnvrts = require('./convert');
+const oprtns = require('./sum');
 
-//console.log(convertions.GetBinaryNumber('1'));
+let a = cnvrts.GetBinaryNumber('12');
+let b = cnvrts.GetBinaryNumber('12');
+let c = oprtns.Add(a,b);
+console.log(c);
+let d = cnvrts.FloatParse(c);
+console.log(cnvrts.GetDecimalNumber(d.intPart, d.fracPart, d.sign));

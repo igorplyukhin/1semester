@@ -1,5 +1,10 @@
 'use strict';
-module.exports.GetBinaryNumber = GetBinaryNumber;
+module.exports = {
+    GetBinaryNumber: GetBinaryNumber,
+    FloatParse: FloatParse,
+    GetDecimalNumber : GetDecimalNumber,
+}
+
 const MantissaSuffix = "00000000000000000000000";
 const ShiftPrefix = "00000000";
 const MantissaLength = 23;
@@ -128,18 +133,29 @@ function FracToDecimal(str) {
     return number;
 }
 
-function GetDecimalNumber(str) {
+function FloatParse(str) {
     let shift = parseInt(str.substr(1, 8), 2) - 127;
     let intPart = 0;
     let fracPart = 0;
+    let sign = str[0];
     if (shift >= 0) {
         intPart = "1" + str.substr(9, shift) + "0".repeat(Math.max(0, shift - 23));
         fracPart = str.substr(9 + shift);
     }
-    return parseInt(intPart, 2) + FracToDecimal(fracPart);
+    else {
+        intPart = '0';
+        fracPart = '0'.repeat(Math.abs(shift + 1)) + '1' + str.substr(9);
+    }
+    return {
+        sign,
+        intPart,
+        fracPart,
+        shift
+    };
 }
 
-
-let v = GetBinaryNumber('41065675465856856854668967978978697896');
-console.log(v);
-console.log(GetDecimalNumber(v));
+function GetDecimalNumber(intPart, fracPart, sign) {
+    return sign === '0'
+    ? parseInt(intPart, 2) + FracToDecimal(fracPart)
+    : -parseInt(intPart, 2) - FracToDecimal(fracPart);
+}

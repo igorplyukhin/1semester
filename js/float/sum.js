@@ -7,30 +7,40 @@ module.exports = {
 function Add(x, y) {
     let xParsed = cnvrts.FloatParse(x);
     let yParsed = cnvrts.FloatParse(y);
-    let xIntPart = BigInt(xParsed.intPart + xParsed.fracPart);
-    let yIntPart = BigInt(yParsed.intPart + yParsed.fracPart);
-    let sum =0;
+    let xBin = xParsed.intPart + xParsed.fracPart;
+    let yBin = yParsed.intPart + yParsed.fracPart;
+    let sum = 0;
     if (xParsed.shift === yParsed.shift) {
-        sum = GetRidOfTwos(xIntPart + yIntPart);
+        sum = BinaryAdd(xBin,yBin);
         let shiftDelta = sum.length - 24;
-        let newShift = GetRidOfTwos(BigInt(x.substr(1,8)) + 1n);
-        return xParsed.sign + newShift  + sum.slice(shiftDelta, -1);
+        let newShift = BinaryAdd(x.substr(1,8), "00000001");
+        return xParsed.sign + newShift + sum.slice(-23 - shiftDelta, -shiftDelta);
     }
 }
+//"110110011100100001111010000000" sum 
+//"11011001110010000111101000000" x
+//"01001110001110010000111101000000" new
+//"01001101110110011100100001111010" was
+"0100111001011001110010000111101000000"
+
+//101011100011100111111011000
+//10101110001110011111101100
 
 function BinaryAdd(x,y) {
     let ans = "";
     let temp = 0
     let mem = 0
     for (let i = x.length - 1; i >= 0; i--) {
-        let a =parseInt(x[i]);
-        temp = (parseInt(x[i]) + parseInt(y[i]) + mem) % 2
-        mem = 0
-        ans = temp.toString() + ans
-        if(Number(x[i]) + Number(y[i]) == 2)
-            mem = 1
+        temp = (parseInt(x[i]) + parseInt(y[i]) + mem) % 2;
+        ans = temp.toString() + ans;
+        if (parseInt(x[i]) + parseInt(y[i]) == 0)
+            mem = 0;
+        if(parseInt(x[i]) + parseInt(y[i]) == 2)
+            mem = 1;
     }
+    if (mem === 1)
+        ans = '1' + ans;
     return ans;
 }
 
-console.log(BinaryAdd('111',"001"));
+//console.log(BinaryAdd('1100',"1100"));

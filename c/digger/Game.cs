@@ -10,6 +10,12 @@ TTP T
 T T T
 TT TT";
 
+        private const string map = @"
+S
+ 
+M
+";
+
         private const string mapWithPlayerTerrainSackGold = @"
 PTTGTT TS
 TST  TSTT

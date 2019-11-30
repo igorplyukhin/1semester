@@ -17,14 +17,6 @@ function Add(x, y) {
         return xParsed.sign + newShift + sum.slice(-23 - shiftDelta, -shiftDelta);
     }
 }
-//"110110011100100001111010000000" sum 
-//"11011001110010000111101000000" x
-//"01001110001110010000111101000000" new
-//"01001101110110011100100001111010" was
-"0100111001011001110010000111101000000"
-
-//101011100011100111111011000
-//10101110001110011111101100
 
 function BinaryAdd(x,y) {
     let ans = "";
@@ -42,5 +34,3 @@ function BinaryAdd(x,y) {
         ans = '1' + ans;
     return ans;
 }
-
-//console.log(BinaryAdd('1100',"1100"));

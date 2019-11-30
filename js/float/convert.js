@@ -2,7 +2,7 @@
 module.exports = {
     GetBinaryNumber: GetBinaryNumber,
     FloatParse: FloatParse,
-    GetDecimalNumber : GetDecimalNumber,
+    GetDecimalNumber: GetDecimalNumber,
 }
 
 const MantissaSuffix = "00000000000000000000000";
@@ -16,18 +16,22 @@ function GetBinaryNumber(str) {
     let binaryNumber = new BinaryNumber;
     binaryNumber.sign = str[0] === '-' ? 1 : 0;
     str = str[0] === '-' ? str.substring(1) : str;
-    if (str.replace(floatRegExp, '') === "") {//NaN //повторить для любой входной строки
+    if (str.replace(floatRegExp, '') === "") {//NaN 
         binaryNumber.shift = "11111111";
-        binaryNumber.mantissa = ('1' + MantissaSuffix).substr(0, MantissaLength);
+        binaryNumber.mantissa = ('01' + MantissaSuffix).substr(0, MantissaLength);
 
-        return binaryNumber;
+        return binaryNumber.sign
+            + binaryNumber.shift
+            + binaryNumber.mantissa;
     }
     let parsedNumber = ParseNumber(str);
     if (parsedNumber.intPart > maxValue) { //Infinity
         binaryNumber.shift = "11111111";
         binaryNumber.mantissa = MantissaSuffix;
 
-        return binaryNumber;
+        return binaryNumber.sign
+            + binaryNumber.shift
+            + binaryNumber.mantissa;
     }
 
     let binIntPart = IntToBinary(parsedNumber.intPart);
@@ -154,8 +158,8 @@ function FloatParse(str) {
     };
 }
 
-function GetDecimalNumber(intPart, fracPart, sign) {
-    return sign === '0'
-    ? parseInt(intPart, 2) + FracToDecimal(fracPart)
-    : -parseInt(intPart, 2) - FracToDecimal(fracPart);
+function GetDecimalNumber(obj) {
+    return obj.sign === '0'
+        ? parseInt(obj.intPart, 2) + FracToDecimal(obj.fracPart)
+        : -parseInt(obj.intPart, 2) - FracToDecimal(obj.fracPart);
 }

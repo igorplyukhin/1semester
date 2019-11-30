@@ -11,10 +11,13 @@ function Add(x, y) {
     let yBin = yParsed.intPart + yParsed.fracPart;
     let sum = 0;
     if (xParsed.shift === yParsed.shift) {
+        xBin = xBin.replace(/^0+/, '');
+        yBin = yBin.replace(/^0+/, '');
         sum = BinaryAdd(xBin,yBin);
-        let shiftDelta = sum.length - 24;
+        let shiftDelta = sum.length - xBin.length;
         let newShift = BinaryAdd(x.substr(1,8), "00000001");
-        return xParsed.sign + newShift + sum.slice(-23 - shiftDelta, -shiftDelta);
+        let m = sum.slice(-23 - shiftDelta, sum.length - shiftDelta);
+        return xParsed.sign + newShift + m;
     }
 }
 

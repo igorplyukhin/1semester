@@ -2,7 +2,7 @@
 const cnvrts = require('./convert');
 const oprtns = require('./sum');
 
-let input = '0+0';
+let input = '135+135';
 let parsedInput = input[0] === '-'
     ? input.split(/-|\+/).splice(1, 2)
     : input.split(/-|\+/);

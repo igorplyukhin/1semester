@@ -1,32 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Input;
-using NUnit.Framework.Constraints;
 
 namespace Digger
 {
     public class Terrain : ICreature
     {
         public string GetImageFileName() => "Terrain.png";
-        public int GetDrawingPriority() => 3;
+
+        public int GetDrawingPriority() => 1;
+
         public CreatureCommand Act(int x, int y) => new CreatureCommand();
-        public bool DeadInConflict(ICreature conflictedObject) => conflictedObject is Player;
+
+        public bool DeadInConflict(ICreature conflictedObject) => true;
     }
 
     class Player : ICreature
     {
         public string GetImageFileName() => "Digger.png";
-        public int GetDrawingPriority() => 2;
-        public bool DeadInConflict(ICreature conflictedObject) => 
-            conflictedObject is Sack || conflictedObject is Monster;
 
-        private bool isCorrectMove(int x, int y, int xBound, int yBound) =>
-            x < xBound && x >= 0 && y < yBound && y >= 0 && !(Game.Map[x, y] is Sack);
+        public int GetDrawingPriority() => 0;
+
+        public bool DeadInConflict(ICreature conflictedObject) =>
+            conflictedObject is Sack || conflictedObject is Monster;
 
         public CreatureCommand Act(int x, int y)
         {
@@ -35,53 +31,56 @@ namespace Digger
             switch (Game.KeyPressed)
             {
                 case Keys.Left:
-                    xDelta = isCorrectMove(x - 1, y, Game.MapWidth, Game.MapHeight) ? -1 : 0;
+                    xDelta = -1;
                     break;
                 case Keys.Right:
-                    xDelta = isCorrectMove(x + 1, y, Game.MapWidth, Game.MapHeight) ? 1 : 0;
+                    xDelta = 1;
                     break;
                 case Keys.Up:
-                    yDelta = isCorrectMove(x, y - 1, Game.MapWidth, Game.MapHeight) ? -1 : 0;
+                    yDelta = -1;
                     break;
                 case Keys.Down:
-                    yDelta = isCorrectMove(x, y + 1, Game.MapWidth, Game.MapHeight) ? 1 : 0;
+                    yDelta = 1;
                     break;
             }
-
-            return new CreatureCommand {DeltaX = xDelta, DeltaY = yDelta};
+            var xNext = x + xDelta;
+            var yNext = y + yDelta;
+            if (Checkers.IsInBounds(xNext, yNext, Game.MapWidth, Game.MapHeight)
+                && Checkers.IsCorrectPlayerMove(xNext, yNext))
+            {
+                if (Game.Map[xNext, yNext] is Gold)
+                    Game.Scores += 10;
+                return new CreatureCommand {DeltaX = xDelta, DeltaY = yDelta};
+            }
+            return new CreatureCommand();
         }
     }
 
     class Sack : ICreature
     {
-        private int pasedCellsCount;
         public string GetImageFileName() => "Sack.png";
-        public int GetDrawingPriority() => 1;
+
+        public int GetDrawingPriority() => 2;
+
         public bool DeadInConflict(ICreature conflictedObject) => false;
+
+        private int passedCellsCount;
+        private CreatureCommand fallOneCell = new CreatureCommand {DeltaY = 1};
+        private CreatureCommand transformToGold = new CreatureCommand {TransformTo = new Gold()};
 
         public CreatureCommand Act(int x, int y)
         {
-            var yDelta = 0;
             var isFalling = true;
-            if (y < Game.MapHeight - 1 && Game.Map[x, y + 1] == null)
-            {
-                yDelta = 1;
-                pasedCellsCount++;
-            }
-            else if (y < Game.MapHeight - 1 && pasedCellsCount > 0 
-                                            && (Game.Map[x, y + 1] is Player || Game.Map[x, y + 1] is Monster))
-            {
-                yDelta = 1;
-                pasedCellsCount++;
-            }
+            if (Checkers.IsCorrectSackMove(x, y + 1, passedCellsCount))
+                passedCellsCount++;
             else
                 isFalling = false;
 
             if (isFalling)
-                return new CreatureCommand {DeltaY = yDelta};
-            if (pasedCellsCount > 1)
-                return new CreatureCommand {TransformTo = new Gold()};
-            pasedCellsCount = 0;
+                return fallOneCell;
+            if (passedCellsCount > 1)
+                return transformToGold;
+            passedCellsCount = 0;
             return new CreatureCommand();
         }
     }
@@ -89,49 +88,49 @@ namespace Digger
     class Gold : ICreature
     {
         public string GetImageFileName() => "Gold.png";
+
         public int GetDrawingPriority() => 3;
+
         public CreatureCommand Act(int x, int y) => new CreatureCommand();
-        public bool DeadInConflict(ICreature conflictedObject)
-        {
-            Game.Scores += 10;
-            return conflictedObject is Player || conflictedObject is Monster;
-        }
+
+        public bool DeadInConflict(ICreature conflictedObject) => true;
     }
 
     class Monster : ICreature
     {
         public string GetImageFileName() => "Monster.png";
+
         public int GetDrawingPriority() => 0;
-        public bool DeadInConflict(ICreature conflictedObject) => 
+
+        public bool DeadInConflict(ICreature conflictedObject) =>
             conflictedObject is Monster || conflictedObject is Sack;
-        private bool isCorrectMove(int x, int y) => 
-            !(Game.Map[x, y] is Terrain || Game.Map[x, y] is Sack || Game.Map[x, y] is Monster);
 
         public CreatureCommand Act(int x, int y)
         {
-            var xDelta = 0;
-            var yDelta = 0;
-            var playerPos = GetPlayerPosition();
-            if (playerPos.X == -1)
-                return new CreatureCommand();
-            if (playerPos.X < x)
-                xDelta = -1;
-            else if (playerPos.X > x)
-                xDelta = 1;
-            else
+            var playerPos = new Point();
+            if (TryGetPlayerPos(out playerPos))
             {
-                if (playerPos.Y < y)
-                    yDelta = -1;
-                else
-                    yDelta = 1;
+                var xDelta = Math.Sign(playerPos.X - x);
+                var yDelta = xDelta == 0 ? Math.Sign(playerPos.Y - y) : 0;
+                var xNext = x + xDelta;
+                var yNext = y + yDelta;
+                if (Checkers.IsInBounds(xNext, yNext, Game.MapWidth, Game.MapHeight)
+                    && Checkers.IsCorrectMonsterMove(xNext, yNext))
+                    return new CreatureCommand {DeltaX = xDelta, DeltaY = yDelta};
+
+                yDelta = Math.Sign(playerPos.Y - y);
+                xDelta = yDelta == 0 ? Math.Sign(playerPos.X - x) : 0;
+                xNext = x + xDelta;
+                yNext = y + yDelta;
+                if (Checkers.IsInBounds(xNext, yNext, Game.MapWidth, Game.MapHeight)
+                    && Checkers.IsCorrectMonsterMove(xNext, yNext))
+                    return new CreatureCommand {DeltaX = xDelta, DeltaY = yDelta};
             }
 
-            return isCorrectMove(x + xDelta, y + yDelta)
-                ? new CreatureCommand {DeltaX = xDelta, DeltaY = yDelta}
-                : new CreatureCommand();
+            return new CreatureCommand();
         }
 
-        private Point GetPlayerPosition()
+        private bool TryGetPlayerPos(out Point p)
         {
             var xBound = Game.MapWidth;
             var yBound = Game.MapHeight;
@@ -139,10 +138,30 @@ namespace Digger
             for (var j = 0; j < yBound; j++)
             {
                 if (Game.Map[i, j] is Player)
-                    return new Point(i, j);
+                {
+                    p = new Point(i, j);
+                    return true;
+                }
             }
 
-            return new Point(-1, -1);
+            p = new Point();
+            return false;
         }
+    }
+
+    class Checkers
+    {
+        public static bool IsInBounds(int x, int y, int xBound, int yBound) =>
+            x < xBound && x >= 0 && y < yBound && y >= 0 && !(Game.Map[x, y] is Sack);
+
+        public static bool IsCorrectMonsterMove(int x, int y) =>
+            !(Game.Map[x, y] is Terrain || Game.Map[x, y] is Sack || Game.Map[x, y] is Monster);
+
+        public static bool IsCorrectPlayerMove(int x, int y) => !(Game.Map[x, y] is Sack);
+
+        public static bool IsCorrectSackMove(int x, int y, int pasedCellsCount)
+            => y < Game.MapHeight
+               && (Game.Map[x, y] == null || (Game.Map[x, y] is Player || Game.Map[x, y] is Monster)
+                   && pasedCellsCount > 0);
     }
 }

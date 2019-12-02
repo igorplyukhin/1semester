@@ -1,39 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace ConsoleApplication1
+﻿namespace ReadOnlyVectorTask
 {
-    public class Program
+    public class ReadOnlyVector
     {
-        public class ClockwiseComparer : IComparer
-        {
-            public int Compare(object x, object y)
-            {
-                double NormalizeAngle(Point p)
-                {
-                    var angle = Math.Atan2(p.Y, p.X);
-                    if (angle < 0)
-                        angle += Math.PI * 2;
-                    return angle;
-                }
+        public readonly double X;
+        public readonly double Y;
 
-                var p1 = (Point) x;
-                var p2 = (Point) y;
-                return NormalizeAngle(p1).CompareTo(NormalizeAngle(p2));
-            }
+        public ReadOnlyVector(double x, double y)
+        {
+            X = x;
+            Y = y;
         }
 
-        public class Point
-        {
-            public double X;
-            public double Y;
-        }
+        public ReadOnlyVector Add(ReadOnlyVector other) => new ReadOnlyVector(X + other.X, Y + other.Y );
 
-        public static void Main()
-        {
-            Console.WriteLine(Math.Atan2(0, -1));
-        }
+        public ReadOnlyVector WithX(double xNew) => new ReadOnlyVector(xNew, Y);
+        
+        public ReadOnlyVector WithY(double yNew) => new ReadOnlyVector(X, yNew);
     }
 }

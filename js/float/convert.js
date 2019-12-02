@@ -138,7 +138,7 @@ function FracToDecimal(str) {
 }
 
 function FloatParse(str) {
-    let shift = parseInt(str.substr(1, 8), 2) - 127;
+    let shift = parseInt(str.substr(1, 8), 2) - ShiftOffset;
     let intPart = 0;
     let fracPart = 0;
     let sign = str[0];
@@ -163,3 +163,5 @@ function GetDecimalNumber(obj) {
         ? parseInt(obj.intPart, 2) + FracToDecimal(obj.fracPart)
         : -parseInt(obj.intPart, 2) - FracToDecimal(obj.fracPart);
 }
+
+

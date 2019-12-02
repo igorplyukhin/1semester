@@ -2,9 +2,11 @@
 const cnvrts = require('./convert');
 module.exports = {
     Add: Add,
+    BinaryAdd: BinaryAdd,
+    BinarySubtract: BinarySubtract,
 }
 
-function Add(x, y) {
+function Add(x, y, Operation) {
     let xParsed = cnvrts.FloatParse(x);
     let yParsed = cnvrts.FloatParse(y);
     let xBin = (xParsed.intPart + xParsed.fracPart).replace(/^0+/, '');
@@ -24,7 +26,7 @@ function Add(x, y) {
     }
     else 
         newShift = BinaryAdd(x.substr(1,8), "1");
-    sum = BinaryAdd(xBin, yBin);
+    sum = Operation(xBin, yBin);
     let shiftDelta = sum.length - xBin.length;
     let m = sum.slice(-23 - shiftDelta, sum.length - shiftDelta);
     return xParsed.sign + newShift + m;
@@ -60,7 +62,7 @@ function BinaryAdd(x, y) {
     return ans;
 }
 
-function BinarySubstract(x, y) {
+function BinarySubtract(x, y) {
     let ans ='';
     let mem =0;
     let norm = Normalize(x, y);

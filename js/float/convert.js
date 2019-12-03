@@ -16,7 +16,8 @@ function GetBinaryNumber(str) {
     let binaryNumber = new BinaryNumber;
     binaryNumber.sign = str[0] === '-' ? 1 : 0;
     str = str[0] === '-' ? str.substring(1) : str;
-    if (str.replace(floatRegExp, '') === "") {//NaN 
+    str = str.replace(floatRegExp, '');
+    if (str === "") {//NaN 
         binaryNumber.shift = "11111111";
         binaryNumber.mantissa = ('01' + MantissaSuffix).substr(0, MantissaLength);
 
@@ -32,6 +33,9 @@ function GetBinaryNumber(str) {
         return binaryNumber.sign
             + binaryNumber.shift
             + binaryNumber.mantissa;
+    }
+    if (parsedNumber.intPart === 0n && parsedNumber.fracPart === 0n) {
+        return '0'.repeat(32);
     }
 
     let binIntPart = IntToBinary(parsedNumber.intPart);
@@ -158,7 +162,16 @@ function FloatParse(str) {
     };
 }
 
-function GetDecimalNumber(obj) {
+function GetDecimalNumber(str) {
+    let obj = FloatParse(str);
+    if (obj.shift === 128) {
+        if (obj.intPart.includes("1",1))
+            return 'NaN'
+        else 
+        return (obj.sign === '0')
+        ? '+Infinity'
+        : '-Infinity';
+    }
     return obj.sign === '0'
         ? parseInt(obj.intPart, 2) + FracToDecimal(obj.fracPart)
         : -parseInt(obj.intPart, 2) - FracToDecimal(obj.fracPart);

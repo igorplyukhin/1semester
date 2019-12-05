@@ -1,0 +1,14 @@
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/Texts/0.txt
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/Texts/1.txt
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/Texts/2.txt
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/Texts/4.txt
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/PocketGoogle.exe.config
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/PocketGoogle.exe
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/PocketGoogle.pdb
+/home/igor/Рабочий стол/repos/c/google/bin/Debug/nunit.framework.dll
+/home/igor/Рабочий стол/repos/c/google/obj/Debug/PocketGoogle.csprojAssemblyReference.cache
+/home/igor/Рабочий стол/repos/c/google/obj/Debug/PocketGoogle.Properties.Resources.resources
+/home/igor/Рабочий стол/repos/c/google/obj/Debug/PocketGoogle.csproj.GenerateResource.cache
+/home/igor/Рабочий стол/repos/c/google/obj/Debug/PocketGoogle.csproj.CopyComplete
+/home/igor/Рабочий стол/repos/c/google/obj/Debug/PocketGoogle.exe
+/home/igor/Рабочий стол/repos/c/google/obj/Debug/PocketGoogle.pdb

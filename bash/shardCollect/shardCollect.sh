@@ -17,6 +17,7 @@ fi
 openedFiles=$(lsof +D "$dir" | awk ' $1!="NAME " {print $9":"}')
 emptyFolderExist=0
 
+shopt -s globstar nullglob
 for folder in "$dir"/*
 do
     count=0
@@ -24,12 +25,12 @@ do
         continue
     fi
 
-    for file in "$folder"/*
+    for file in "$folder"/**
     do
         if ! [[ -f $file ]]; then
             continue
         fi
-
+        
         if echo "$openedFiles" | grep -q "$file" 
         then
             count=1
@@ -37,7 +38,7 @@ do
     done
 
     if [[ count -eq 0 ]]; then
-        echo "$folder Doesn't have opened files"
+        echo "$folder"
         emptyFolderExist=1
     fi
 done
@@ -45,3 +46,4 @@ done
 if [[ emptyFolderExist -eq 0 ]]; then
     exit 1;
 fi
+

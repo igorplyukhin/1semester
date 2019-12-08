@@ -1,12 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace HotelAccounting
 {
     class AccountingModel : ModelBase
     {
         private double price;
-
+        private int nightsCount;
+        private double discount;
+        private double total;
+        
         public double Price
         {
             get => price;
@@ -22,8 +24,6 @@ namespace HotelAccounting
                     throw new ArgumentException();
             }
         }
-
-        private int nightsCount;
 
         public int NightsCount
         {
@@ -43,8 +43,6 @@ namespace HotelAccounting
             }
         }
 
-        private double discount;
-
         public double Discount
         {
             get => discount;
@@ -60,8 +58,6 @@ namespace HotelAccounting
                     throw new ArgumentException();
             }
         }
-
-        private double total;
 
         public double Total
         {

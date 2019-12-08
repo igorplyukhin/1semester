@@ -2,7 +2,7 @@
 const cnvrts = require('./convert');
 const oprtns = require('./sum');
 
-let input = 'jghdj+1';
+let input = process.argv[2];
 let splitedStr;
 let firstChIsMinus = false;
 let isAddition = false;

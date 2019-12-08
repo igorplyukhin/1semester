@@ -81,5 +81,3 @@ function BinarySubtract(x, y) {
     }
     return ans;
 }
-
-console.log('2'+ 1)

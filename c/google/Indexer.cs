@@ -4,17 +4,6 @@ using System.Linq;
 
 namespace PocketGoogle
 {
-    public class Word
-    {
-        private Dictionary<int, List<int>> entries = new Dictionary<int, List<int>>();
-
-        public Dictionary<int, List<int>> Entries
-        {
-            get => entries;
-            set => entries = value;
-        }
-    }
-    
     public class Indexer : IIndexer
     {
         private readonly Dictionary<string, Dictionary<int, List<int>>> data =

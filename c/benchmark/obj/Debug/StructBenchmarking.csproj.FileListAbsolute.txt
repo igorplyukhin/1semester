@@ -1,0 +1,13 @@
+C:\Users\Igor\Desktop\repos\c\benchmark\bin\Debug\StructBenchmarking.exe.config
+C:\Users\Igor\Desktop\repos\c\benchmark\bin\Debug\StructBenchmarking.exe
+C:\Users\Igor\Desktop\repos\c\benchmark\bin\Debug\StructBenchmarking.pdb
+C:\Users\Igor\Desktop\repos\c\benchmark\bin\Debug\nunit.framework.dll
+C:\Users\Igor\Desktop\repos\c\benchmark\bin\Debug\ZedGraph.dll
+C:\Users\Igor\Desktop\repos\c\benchmark\bin\Debug\ZedGraph.xml
+C:\Users\Igor\Desktop\repos\c\benchmark\obj\Debug\StructBenchmarking.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c\benchmark\obj\Debug\StructBenchmarking.Properties.Resources.resources
+C:\Users\Igor\Desktop\repos\c\benchmark\obj\Debug\StructBenchmarking.csproj.GenerateResource.cache
+C:\Users\Igor\Desktop\repos\c\benchmark\obj\Debug\StructBenchmarking.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c\benchmark\obj\Debug\StructBenchmarking.csproj.CopyComplete
+C:\Users\Igor\Desktop\repos\c\benchmark\obj\Debug\StructBenchmarking.exe
+C:\Users\Igor\Desktop\repos\c\benchmark\obj\Debug\StructBenchmarking.pdb

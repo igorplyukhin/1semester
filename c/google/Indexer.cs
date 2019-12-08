@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PocketGoogle
 {
@@ -11,40 +12,29 @@ namespace PocketGoogle
 
         private readonly Dictionary<int, string> allDocs = new Dictionary<int, string>();
 
-        private readonly char[] delimiters = {' ', '.', ',', '!', '?', ':', '-', '\r', '\n'};
-
-        private void SetDict(string word, int id, int position)
-        {
-            if (data.ContainsKey(word))
-            {
-                if (data[word].ContainsKey(id))
-                    data[word][id].Add(position - word.Length);
-                else
-                    data[word].Add(id, new List<int> {position - word.Length});
-            }
-            else
-                data.Add(word, new Dictionary<int, List<int>> {{id, new List<int> {position - word.Length}}});
-        }
-
+        private static readonly char[] delimiters = {' ', '.', ',', '!', '?', ':', '-', '\r', '\n'};
+        
         public void Add(int id, string documentText)
         {
-            var buffer = "";
+            var buffer = new StringBuilder();
             if (!allDocs.ContainsKey(id))
                 allDocs.Add(id, documentText);
             for (var i = 0; i < documentText.Length; i++)
             {
                 var ch = documentText[i];
-                if (delimiters.Contains(ch) && buffer != "")
+                if (delimiters.Contains(ch))
                 {
-                    SetDict(buffer, id, i);
-                    buffer = "";
+                    if (buffer.Length == 0)
+                        continue;
+                    AddNewWord(buffer.ToString(), id, i);
+                    buffer.Clear();
                 }
-                else if (Char.IsLetter(ch))
-                    buffer += ch;
+                else
+                    buffer.Append(ch);
             }
 
             if (buffer.Length > 0)
-                SetDict(buffer, id, documentText.Length);
+                AddNewWord(buffer.ToString(), id, documentText.Length);
         }
 
         public List<int> GetIds(string word)
@@ -57,16 +47,27 @@ namespace PocketGoogle
             => data.ContainsKey(word) && data[word].ContainsKey(id)
                 ? data[word][id]
                 : new List<int>();
-
-
+        
         public void Remove(int id)
         {
-            var text = allDocs[id].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var word in text)
+            foreach (var word in data.Keys)
             {
-                if (data.ContainsKey(word))
-                    data[word].Remove(id);
+                data[word].Remove(id);
             }
+        }
+
+        private void AddNewWord(string word, int id, int position)
+        {
+            var entryIndex = position - word.Length;
+            if (data.ContainsKey(word))
+            {
+                if (data[word].ContainsKey(id))
+                    data[word][id].Add(entryIndex);
+                else
+                    data[word].Add(id, new List<int> {entryIndex});
+            }
+            else
+                data.Add(word, new Dictionary<int, List<int>> {{id, new List<int> {entryIndex}}});
         }
     }
 }

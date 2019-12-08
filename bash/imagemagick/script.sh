@@ -15,8 +15,18 @@ fi
 inputdir=$1
 text=$2
 outputdir=$3
-fontSize=$4
-fontName=$5
+if [[ -z $4 ]]; then
+    fontSize=55
+    else 
+    fontSize=$4
+fi
+
+if [[ -z $5 ]]; then
+    fontName='Waree-Oblique'
+    else 
+    fontSize=$5
+fi
+
 suffics="_annotated"
 f=$(find "$inputdir" -name \*jpg)
 for file in $f
@@ -25,5 +35,5 @@ filename=$(basename -- "$file")
 filename="${filename%.*}"
 echo "$filename"" was converted"
 convert "$file" -fill white -gravity SouthEast \
-    -pointsize $fontSize -font $fontName -annotate +0+0 "$text" "$outputdir$filename$suffics.jpg" 
+    -pointsize $fontSize -font $fontName -annotate +0+0 "$text" "$outputdir/$filename$suffics.jpg" 
 done

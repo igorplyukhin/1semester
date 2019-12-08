@@ -1,0 +1,14 @@
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting.csprojAssemblyReference.cache
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting_MarkupCompile.cache
+C:\Users\Igor\Desktop\repos\c\hotel\bin\Debug\HotelAccounting.exe.config
+C:\Users\Igor\Desktop\repos\c\hotel\bin\Debug\HotelAccounting.exe
+C:\Users\Igor\Desktop\repos\c\hotel\bin\Debug\HotelAccounting.pdb
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\MainWindow.g.cs
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting_MarkupCompile.lref
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\MainWindow.baml
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting.g.resources
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting.Properties.Resources.resources
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting.csproj.GenerateResource.cache
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting.csproj.CoreCompileInputs.cache
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting.exe
+C:\Users\Igor\Desktop\repos\c\hotel\obj\Debug\HotelAccounting.pdb

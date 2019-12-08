@@ -1,61 +1,94 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace HotelAccounting
 {
     class AccountingModel : ModelBase
     {
-        private double Price
+        private double price;
+
+        public double Price
         {
-            get { return Price; }
+            get => price;
             set
             {
                 if (value > 0)
                 {
-                    Price = value;
+                    price = value;
+                    UpdateTotal();
                     Notify(nameof(Price));
                 }
                 else
+                    throw new ArgumentException();
+            }
+        }
+
+        private int nightsCount;
+
+        public int NightsCount
+        {
+            get => nightsCount;
+            set
+            {
+                if (value > 0)
                 {
-                    
+                    nightsCount = value;
+                    UpdateTotal();
+                    Notify(nameof(NightsCount));
                 }
+                else
                 {
                     throw new ArgumentException();
                 }
             }
         }
 
-        private int NightsCount
+        private double discount;
+
+        public double Discount
         {
-            get { return NightsCount; }
+            get => discount;
+            set
+            {
+                if (Math.Abs(value) <= 100)
+                {
+                    discount = value;
+                    UpdateTotal();
+                    Notify(nameof(Discount));
+                }
+                else
+                    throw new ArgumentException();
+            }
+        }
+
+        private double total;
+
+        public double Total
+        {
+            get => total;
             set
             {
                 if (value >= 0)
                 {
-                    NightsCount = value;
-                    Notify(nameof(NightsCount));
+                    total = value;
+                    UpdateDiscount();
+                    Notify(nameof(Total));
                 }
+                else
+                    throw new ArgumentException();
             }
         }
 
-        private double Discount
+        private void UpdateTotal()
         {
-            get { return Discount;}
-            set
-            {
-                Discount = value;
-                Notify(nameof(Discount));
-            }
+            total = price * nightsCount * (1 - discount / 100);
+            Notify(nameof(Total));
         }
 
-        private double Total
+        private void UpdateDiscount()
         {
-            get { return Total; }
-            set
-            {
-                Discount = Total * NightsCount * (1 - Price / 100);
-                Notify(nameof(Total));
-            }
+            discount = 100 - (100 * total) / (price * nightsCount);
+            Notify(nameof(Discount));
         }
-        
     };
 }

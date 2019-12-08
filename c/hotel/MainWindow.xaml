@@ -11,7 +11,7 @@
         <DockPanel>
             <TextBox Width="100" DockPanel.Dock="Right"
                      Text="{Binding Price, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
-            <emit:Label>Цена за одну ночь</emit:Label>
+            <Label>Цена за одну ночь</Label>
         </DockPanel>
         <DockPanel>
             <TextBox Width="100" DockPanel.Dock="Right"

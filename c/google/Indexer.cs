@@ -10,15 +10,13 @@ namespace PocketGoogle
         private readonly Dictionary<string, Dictionary<int, List<int>>> data =
             new Dictionary<string, Dictionary<int, List<int>>>();
 
-        private readonly Dictionary<int, string> allDocs = new Dictionary<int, string>();
+        private readonly Dictionary<int, List<string>> allDocs = new Dictionary<int, List<string>>();
 
         private static readonly char[] delimiters = {' ', '.', ',', '!', '?', ':', '-', '\r', '\n'};
-        
+
         public void Add(int id, string documentText)
         {
             var buffer = new StringBuilder();
-            if (!allDocs.ContainsKey(id))
-                allDocs.Add(id, documentText);
             for (var i = 0; i < documentText.Length; i++)
             {
                 var ch = documentText[i];
@@ -26,7 +24,15 @@ namespace PocketGoogle
                 {
                     if (buffer.Length == 0)
                         continue;
-                    AddNewWord(buffer.ToString(), id, i);
+                    var word = buffer.ToString();
+                    AddNewWord(word, id, i);
+                    if (allDocs.ContainsKey(id))
+                    {
+                        if (!allDocs[id].Contains(word))
+                            allDocs[id].Add(word);
+                    }
+                    else
+                        allDocs.Add(id, new List<string> {word});
                     buffer.Clear();
                 }
                 else
@@ -47,12 +53,16 @@ namespace PocketGoogle
             => data.ContainsKey(word) && data[word].ContainsKey(id)
                 ? data[word][id]
                 : new List<int>();
-        
+
         public void Remove(int id)
         {
-            foreach (var word in data.Keys)
+            if (allDocs.ContainsKey(id))
             {
-                data[word].Remove(id);
+                var text = allDocs[id];
+                foreach (var word in text)
+                {
+                    data[word].Remove(id);
+                }
             }
         }
 

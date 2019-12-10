@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -25,14 +24,8 @@ namespace PocketGoogle
                     if (buffer.Length == 0)
                         continue;
                     var word = buffer.ToString();
-                    AddNewWord(word, id, i);
-                    if (allDocs.ContainsKey(id))
-                    {
-                        if (!allDocs[id].Contains(word))
-                            allDocs[id].Add(word);
-                    }
-                    else
-                        allDocs.Add(id, new List<string> {word});
+                    UpdateData(word, id, i);
+                    UpdateAllDocs(word,id);
                     buffer.Clear();
                 }
                 else
@@ -40,7 +33,11 @@ namespace PocketGoogle
             }
 
             if (buffer.Length > 0)
-                AddNewWord(buffer.ToString(), id, documentText.Length);
+            {
+                var word = buffer.ToString();
+                UpdateData(word, id, documentText.Length);
+                UpdateAllDocs(word,id);
+            }
         }
 
         public List<int> GetIds(string word)
@@ -56,17 +53,26 @@ namespace PocketGoogle
 
         public void Remove(int id)
         {
-            if (allDocs.ContainsKey(id))
+            var text = allDocs[id];
+            foreach (var word in text)
             {
-                var text = allDocs[id];
-                foreach (var word in text)
-                {
+                if (data.ContainsKey(word))
                     data[word].Remove(id);
-                }
             }
         }
 
-        private void AddNewWord(string word, int id, int position)
+        private void UpdateAllDocs(string word, int id)
+        {
+            if (allDocs.ContainsKey(id))
+            {
+                if (!allDocs[id].Contains(word))
+                    allDocs[id].Add(word);
+            }
+            else
+                allDocs.Add(id, new List<string> {word});
+        }
+        
+        private void UpdateData(string word, int id, int position)
         {
             var entryIndex = position - word.Length;
             if (data.ContainsKey(word))

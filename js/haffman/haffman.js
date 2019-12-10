@@ -3,7 +3,19 @@ let inFile = process.argv[3];
 let tableFile = process.argv[4];
 let outFile = process.argv[5];
 
-process.argv[2] === "code" ? Code(inFile, tableFile, outFile) : Decode(inFile, tableFile, outFile);
+if (!fs.existsSync(inFile)) {
+    console.log("Input file doesn't exist");
+    return;
+}
+
+if (process.argv[2] === 'decode' && !fs.existsSync(tableFile)) {
+    console.log("Table file doesn't exist");
+    return;
+}
+
+process.argv[2] === "code"
+    ? Code(inFile, tableFile, outFile)
+    : Decode(inFile, tableFile, outFile);
 
 function Code(inFile, tableFile, outFile) {
     let Node = function (count) {
@@ -79,23 +91,19 @@ function Code(inFile, tableFile, outFile) {
 
 function Decode(inFile, tableFile, outFile) {
     let s = fs.readFileSync(inFile, "utf8");
-    let strtable = fs.readFileSync(tableFile, "utf8");
-    let splitedTable = strtable.trim().split(/[\n ]+/);
+    let strtable = fs.readFileSync(tableFile, "utf8").trim().split(/\n/);
     let table = {};
     let decodedStr = "";
 
-    //Парсинг table.txt
-    for (let i = splitedTable.length - 1; i >= 0; i--) {
-        table[splitedTable[i]] = splitedTable[i - 1];
-        i--;
+    for (let i = 0; i < strtable.length; i++) {     //Парсинг table.txt
+        table[strtable[i].substr(2)] = strtable[i][0];
     }
-    
-    //Поиск соответствий
-    for (let i = 0; i < s.length; i++) {
+
+    for (let i = 0; i < s.length; i++) {    //Поиск соответствий
         let key = s[i];
         let j = i;
         while (!(key in table)) {
-            if (j === s.length - 1){
+            if (j === s.length - 1) {
                 fs.writeFileSync(outFile, decodedStr);
                 console.log("Can't be fully decoded");
                 return;

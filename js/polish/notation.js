@@ -1,3 +1,4 @@
+const fs = require('fs');
 let operations = new Map([
     ["(", 0],
     [")", 0],
@@ -8,20 +9,20 @@ let operations = new Map([
     ["^", 3],
 ]);
 
-function IsUnary(str, i) {
-    return str[i - 1] === undefined
-        || str[i - 1] === '('
-        || operations.has(str[i - 1]);
+let inFile = 'input.txt';
+if (!fs.existsSync(inFile)) {
+    console.log('file doesn\'t exist');
+    process.exit(-1);
 }
 
-function GetNumber(str, position) {
-    let number = '';
-    for (let i = position; i < str.length; i++) {
-        if (operations.has(str[i]) || str[i] === ' ')
-            break;
-        number += str[i];
-    }
-    return number;
+let str = fs.readFileSync(inFile, 'utf8');
+if (CheckBrakets(str)){
+    var postfix = ConvertToPostfix(str);
+    console.log(postfix.join(' '));
+    console.log(Compute(postfix));
+}
+else {
+    console.log('Wrong brackets');
 }
 
 function ConvertToPostfix(expr) {
@@ -33,10 +34,10 @@ function ConvertToPostfix(expr) {
         if (expr[i] === ')') {
             let j = stack.length - 1;
             while (stack[j] !== '(') {
-                output.push(stack.shift());
+                output.push(stack.pop());
                 j = stack.length - 1;
             }
-            stack.shift();
+            stack.pop();
             continue;
         }
         if (operations.has(expr[i])) {
@@ -47,14 +48,14 @@ function ConvertToPostfix(expr) {
             }
             let j = stack.length - 1;
             while (expr[i] !== '(' && (operations.get(stack[j]) >= operations.get(expr[i]))) {
-                output.push(stack.shift());
+                output.push(stack.pop());
                 j = stack.length - 1;
             }
             stack.push(expr[i]);
         }
         else {
             let number = GetNumber(expr, i);
-            output.push(number);
+            output.push(parseFloat(number));
             i += number.length - 1;
         }
     }
@@ -70,28 +71,66 @@ function Compute(arr) {
     for (let i = 0; i < arr.length; i++) {
         if (operations.has(arr[i])) {
             let res;
+            let len = stack.length;
             switch(arr[i]){
                 case "+":
-                    res = stack.shift() + stack.shift();
+                    res = stack[len-2] + stack[len-1];
                     break;
                 case "-":
-                    res = stack.shift() - stack.shift();
+                    res = stack[len-2] - stack[len-1];
                     break;
                 case "*":
-                    res = stack.shift() * stack.shift();
+                    res = stack[len-2] * stack[len-1];
                     break;
                 case "/":
-                    res = stack.shift() / stack.shift();
+                    res = stack[len-2] / stack[len-1];
+                    break;
+                case "^":
+                    res = Math.pow(stack[len-2], stack[len-1]);
                     break;
             }
+            stack.pop();
+            stack.pop();
             stack.push(res);
         }
         else {
-            stack.push(arr[i]);
+            if (arr[i][0]==='\\')
+                stack.push(-arr[i+1])
+            else
+                stack.push(arr[i]);
         }
     }
     return stack[0];
 }
 
-console.log(ConvertToPostfix("(1+2)*4+3"))
-//console.log(Compute(['1', '2','+', '4', '*', '3', '+']));
+function CheckBrakets(inFile) {
+    let balance = 0;
+    for (let i=0 ; i< inFile.length; i++) {
+        if (inFile[i]==='(')
+            balance++;
+        else if (inFile[i]===")")
+            balance--;
+        if (balance < 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function IsUnary(inFile, i) {
+    return inFile[i - 1] === undefined
+        || inFile[i - 1] === '('
+        || operations.has(inFile[i - 1]);
+}
+
+function GetNumber(inFile, position) {
+    let number = '';
+    for (let i = position; i < inFile.length; i++) {
+        if (operations.has(inFile[i]) || inFile[i] === ' ')
+            break;
+        number += inFile[i];
+    }
+    return number;
+}
+
+

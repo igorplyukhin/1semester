@@ -31,9 +31,9 @@ suffics="_annotated"
 f=$(find "$inputdir" -name \*jpg)
 for file in $f
 do
-filename=$(basename -- "$file")
-filename="${filename%.*}"
-echo "$filename"" was converted"
-convert "$file" -fill white -gravity SouthEast \
-    -pointsize $fontSize -font $fontName -annotate +0+0 "$text" "$outputdir/$filename$suffics.jpg" 
+    filename=$(basename "$file")
+    filename="${filename%.*}"
+    convert "$file" -fill white -gravity SouthEast \
+        -pointsize $fontSize -font $fontName -annotate +0+0 "$text" "$outputdir/$filename$suffics.jpg" 
+    echo "$filename"" was converted"
 done

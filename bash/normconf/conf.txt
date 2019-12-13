@@ -1,7 +1,7 @@
-abc=5s
+abc=5s 10min
 
 def=100kg 10g
 
 gsdg=1l
 
-n=5mm
+n=5m

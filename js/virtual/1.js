@@ -2,19 +2,12 @@
 M0 - loop var; M1 = bool; M2 = inputvalue; M3... = free var;
 */
 const fs = require('fs');
-const readlineSync = require('readline-sync');
-
 let file = process.argv[2];
-if (!fs.existsSync(file)){
-    console.log("File doesn\'t exist");
-    process.exit(-1);
-}
-
+let inputValue = process.argv[3];
 let source = fs.readFileSync(file, 'utf8');
 let lines = source.replace(/\r*\n*\s+/g, '').split(';');
 let stack = new Map();
 let labels = new Map();
-
 for (let i = 0; i < lines.length - 1; i++) {
     let line = lines[i];
     if (line[0] === '@') 
@@ -32,8 +25,8 @@ for (let i = 0; i < lines.length - 1; i++) {
         console.log(stack.get(line.split('-->')[0]))
     }
     else if (line.includes('<--')) {
-        var inputVal = readlineSync.question('Type number ');
-        PushToStack(stack, line.split('<--')[0], inputVal)
+        PushToStack(stack, line.split('<--')[0], inputValue);
+        inputValue = process.argv[4];
     }
     else if (line.includes('LT')) {
         line = line.match(/\((.*?)\)/);

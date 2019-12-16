@@ -8,8 +8,8 @@ namespace StructBenchmarking
         public static ChartData BuildChartDataForArrayCreation(
             IBenchmark benchmark, int repetitionsCount)
         {
-            var chart = new ChartDataInfo(benchmark, repetitionsCount, Functions.CreateStructArray,
-                Functions.CreateClassArray);
+            var chart = new ChartDataCreation(benchmark, repetitionsCount,
+                x => new StructArrayCreationTask(x), x => new ClassArrayCreationTask(x));
 
             return new ChartData
             {
@@ -22,8 +22,9 @@ namespace StructBenchmarking
         public static ChartData BuildChartDataForMethodCall(
             IBenchmark benchmark, int repetitionsCount)
         {
-            var chart = new ChartDataInfo(benchmark, repetitionsCount, Functions.CreateStruct,
-                Functions.CreateClass);
+            var chart = new ChartDataCreation(benchmark, repetitionsCount,
+                x => new MethodCallWithStructArgumentTask(x), 
+                x => new MethodCallWithClassArgumentTask(x));
 
             return new ChartData
             {
@@ -34,34 +35,22 @@ namespace StructBenchmarking
         }
     }
 
-    static class Functions
+    class ChartDataCreation
     {
-        public static MethodCallWithStructArgumentTask CreateStruct(int size) =>
-            new MethodCallWithStructArgumentTask(size);
+        private readonly List<ExperimentResult> classesTimes = new List<ExperimentResult>();
+        private readonly List<ExperimentResult> structuresTimes = new List<ExperimentResult>();
+        public List<ExperimentResult> ClassesTimes => classesTimes;
+        public List<ExperimentResult> StructuresTimes => structuresTimes;
 
-        public static MethodCallWithClassArgumentTask CreateClass(int size) =>
-            new MethodCallWithClassArgumentTask(size);
-
-        public static StructArrayCreationTask CreateStructArray(int size) =>
-            new StructArrayCreationTask(size);
-
-        public static ClassArrayCreationTask CreateClassArray(int size) =>
-            new ClassArrayCreationTask(size);
-    }
-
-    class ChartDataInfo
-    {
-        public List<ExperimentResult> ClassesTimes = new List<ExperimentResult>();
-        public List<ExperimentResult> StructuresTimes = new List<ExperimentResult>();
-
-        public ChartDataInfo(IBenchmark benchmark, int repetitionsCount, Func<int, ITask> m1, Func<int, ITask> m2)
+        public ChartDataCreation(
+            IBenchmark benchmark, int repetitionsCount, Func<int, ITask> structTask, Func<int, ITask> classTask)
         {
             foreach (var size in Constants.FieldCounts)
             {
-                var time = benchmark.MeasureDurationInMs(m1(size), repetitionsCount);
-                StructuresTimes.Add(new ExperimentResult(size, time));
-                time = benchmark.MeasureDurationInMs(m2(size), repetitionsCount);
-                ClassesTimes.Add(new ExperimentResult(size, time));
+                var time = benchmark.MeasureDurationInMs(structTask(size), repetitionsCount);
+                structuresTimes.Add(new ExperimentResult(size, time));
+                time = benchmark.MeasureDurationInMs(classTask(size), repetitionsCount);
+                classesTimes.Add(new ExperimentResult(size, time));
             }
         }
     }

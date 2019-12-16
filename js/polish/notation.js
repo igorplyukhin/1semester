@@ -1,4 +1,3 @@
-const fs = require('fs');
 let operations = new Map([
     ["(", 0],
     [")", 0],
@@ -9,21 +8,11 @@ let operations = new Map([
     ["^", 3],
 ]);
 
-let inFile = 'input.txt';
-if (!fs.existsSync(inFile)) {
-    console.log('file doesn\'t exist');
-    process.exit(-1);
-}
+str=process.argv[2];
 
-let str = fs.readFileSync(inFile, 'utf8');
-if (CheckBrakets(str)){
-    var postfix = ConvertToPostfix(str);
-    console.log(postfix.join(' '));
-    console.log(Compute(postfix));
-}
-else {
-    console.log('Wrong brackets');
-}
+var postfix = ConvertToPostfix(str);
+console.log(postfix.join(' '));
+console.log(Compute(postfix));
 
 function ConvertToPostfix(expr) {
     let output = new Array();
@@ -36,14 +25,19 @@ function ConvertToPostfix(expr) {
             while (stack[j] !== '(') {
                 output.push(stack.pop());
                 j = stack.length - 1;
+                if (j === -1){
+                    console.log('wrong input');
+                    process.exit(-1);
+                }
             }
             stack.pop();
             continue;
         }
         if (operations.has(expr[i])) {
             if (expr[i] === '-' && IsUnary(expr, i)) {
-                output.push('\\' + expr[i + 1]);
-                i++;
+                let number = GetNumber(expr, i+1);
+                output.push('\\' + number);
+                i += number.length;
                 continue;
             }
             let j = stack.length - 1;
@@ -61,6 +55,10 @@ function ConvertToPostfix(expr) {
     }
 
     for (let i = stack.length - 1; i >= 0; i--) {
+        if (stack[i] === '('){
+            console.log('wrong input');
+            process.exit(-1);
+        }
         output.push(stack[i]);
     }
     return output;
@@ -95,7 +93,7 @@ function Compute(arr) {
         }
         else {
             if (arr[i][0]==='\\')
-                stack.push(-arr[i+1])
+                stack.push(-arr[i].substr(1))
             else
                 stack.push(arr[i]);
         }
@@ -103,24 +101,11 @@ function Compute(arr) {
     return stack[0];
 }
 
-function CheckBrakets(inFile) {
-    let balance = 0;
-    for (let i=0 ; i< inFile.length; i++) {
-        if (inFile[i]==='(')
-            balance++;
-        else if (inFile[i]===")")
-            balance--;
-        if (balance < 0) {
-            return false;
-        }
-    }
-    return true;
-}
-
 function IsUnary(inFile, i) {
     return inFile[i - 1] === undefined
         || inFile[i - 1] === '('
-        || operations.has(inFile[i - 1]);
+        || operations.has(inFile[i - 1])
+        || inFile[i - 1] === ' ';
 }
 
 function GetNumber(inFile, position) {
@@ -132,5 +117,4 @@ function GetNumber(inFile, position) {
     }
     return number;
 }
-
 

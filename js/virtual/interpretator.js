@@ -1,11 +1,11 @@
 /*
-M0 - loop var; M1 = bool; M2 = inputvalue; M3... = free var;
+M0 - loop var; M1 = bool; M2... = free var;
 */
 const fs = require('fs');
 const readlineSync = require('readline-sync');
 
 let file = process.argv[2];
-if (!fs.existsSync(file)){
+if (!fs.existsSync(file)) {
     console.log("File doesn\'t exist");
     process.exit(-1);
 }
@@ -17,7 +17,7 @@ let labels = new Map();
 
 for (let i = 0; i < lines.length - 1; i++) {
     let line = lines[i];
-    if (line[0] === '@') 
+    if (line[0] === '@')
         labels.set(line.substring(1), i);
 }
 
@@ -32,8 +32,13 @@ for (let i = 0; i < lines.length - 1; i++) {
         console.log(stack.get(line.split('-->')[0]))
     }
     else if (line.includes('<--')) {
-        var inputVal = readlineSync.question('Type number ');
-        PushToStack(stack, line.split('<--')[0], inputVal)
+        let inputVal = readlineSync.question('Type number ');
+        if (isNaN(inputVal)) {
+            console.log('Integer expected');
+            process.exit(-1);
+        }
+        else
+            PushToStack(stack, line.split('<--')[0], inputVal);
     }
     else if (line.includes('LT')) {
         line = line.match(/\((.*?)\)/);
@@ -61,6 +66,14 @@ for (let i = 0; i < lines.length - 1; i++) {
     else if (line.includes('EXIT')) {
         break;
     }
+    else if (line.includes('SUBTR')) {
+        line = line.match(/\((.*?)\)/)[1].split(',');
+        Subtract(stack, line[1], line[2], line[0]);
+    }
+    else if (line.includes('ADD')) {
+        line = line.match(/\((.*?)\)/)[1].split(',');
+        Add(stack, line[1], line[2], line[0]);
+    }
     else {
         console.log('Unknown sytax');
         break;
@@ -70,29 +83,25 @@ for (let i = 0; i < lines.length - 1; i++) {
 function PushToStack(map, index, value) {
     if (!isNaN(value))
         map.set(index, parseInt(value));
-    else if (value.includes('+')) {
-        map.set(index, Add(map, value));
-    }
-    else if (value.includes('-')) {
-        map.set(index, Subtract(map, value));
-    }
-    else {
+    else if (map.has(value)) {
         map.set(index, map.get(value));
     }
+    else {
+        console.log('stack error');
+        process.exit(-1);
+    }
 }
 
-function Add(map, str) {
-    str = str.split('+');
-    let a = map.has(str[0]) ? map.get(str[0]) : str[0];
-    let b = map.has(str[1]) ? map.get(str[1]) : str[1];
-    return parseInt(a) + parseInt(b);
+function Add(map, a, b, outputIndex) {
+    a = map.has(a) ? map.get(a) : a;
+    b = map.has(b) ? map.get(b) : b;
+    map.set(outputIndex, parseInt(a) + parseInt(b));
 }
 
-function Subtract(map, str) {
-    str = str.split('-');
-    let a = map.has(str[0]) ? map.get(str[0]) : str[0];
-    let b = map.has(str[1]) ? map.get(str[1]) : str[1];
-    return parseInt(a) - parseInt(b);
+function Subtract(map, a, b, outputIndex) {
+    a = map.has(a) ? map.get(a) : a;
+    b = map.has(b) ? map.get(b) : b;
+    map.set(outputIndex, parseInt(a) - parseInt(b));
 }
 
 function LT(map, a, b) {
@@ -100,7 +109,7 @@ function LT(map, a, b) {
     b = map.has(b) ? map.get(b) : b;
     if (parseInt(a) < parseInt(b))
         stack.set('M1', 1);
-    else 
+    else
         stack.set('M1', 0);
 }
 
@@ -109,7 +118,7 @@ function GT(map, a, b) {
     b = map.has(b) ? map.get(b) : b;
     if (parseInt(a) > parseInt(b))
         stack.set('M1', 1);
-    else 
+    else
         stack.set('M1', 0);
 }
 
@@ -118,6 +127,6 @@ function Equal(map, a, b) {
     b = map.has(b) ? map.get(b) : b;
     if (parseInt(a) === parseInt(b))
         stack.set('M1', 1);
-    else 
+    else
         stack.set('M1', 0);
 }

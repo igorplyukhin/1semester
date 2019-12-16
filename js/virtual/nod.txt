@@ -19,17 +19,21 @@ M4 -->;
 EXIT;
 
 @GREATER;
-M4 = M4 - M3;
+SUBTR(M6, M4, M3);
+M4 = M6;
 GOTO @ENDELSE;
 
 @LOWER;
-M3 = M3 - M4;
+SUBTR(M6, M3, M4);
+M3 = M6;
 GOTO @ENDIF;
 
 @MOD1;
-M3 = 0 - M3;
+SUBTR(M6, 0, M3);
+M3 = M6;
 GOTO @ENDMOD1;
 
 @MOD2;
-M4 = 0 - M4;
+SUBTR(M6, 0, M4);
+M4 = M6;
 GOTO @ENDMOD2;

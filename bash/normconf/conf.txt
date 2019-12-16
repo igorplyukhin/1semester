@@ -1,7 +1,7 @@
-abc=5s 10min
+time=4s - 5s
 
-def=100kg 10g
+distance=1m - 2m - 1mm - 1dm 1sm
 
-gsdg=1l
+longtime=15h
 
-n=5m
+weight=42g

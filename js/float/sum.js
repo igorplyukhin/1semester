@@ -6,7 +6,7 @@ module.exports = {
     BinarySubtract: BinarySubtract,
 }
 
-function Add(x, y, Operation) {
+function Add(x, y, Operajtion) {
     let xParsed = cnvrts.FloatParse(x);
     let yParsed = cnvrts.FloatParse(y);
     let xBin = (xParsed.intPart + xParsed.fracPart).replace(/^0+/, '');

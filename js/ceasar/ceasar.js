@@ -8,17 +8,17 @@ if (!fs.existsSync(inFile)){
     console.log('file doesn\'t exist');
     process.exit(-1);
 }
-if (!fs.existsSync('trainingSample.txt')){
-    console.log('trainingSample.txt required');
+if (!fs.existsSync('RuTrainingSample.txt') || !fs.existsSync('EnTrainingSample.txt')){
+    console.log('RuTrainingSample.txt && EnTrainingSample.txt required');
     process.exit(-1);
 }
 
+let trainFile = '';
 let message = fs.readFileSync(inFile, 'utf8');
-let trainFile = fs.readFileSync('trainingSample.txt', 'utf8')
 let language = '';
 let shift = 0;
-
 let mode = process.argv[2];
+
 switch (mode){
     case 'code':
         shift = parseInt(process.argv[5]);
@@ -39,10 +39,16 @@ switch (mode){
         language = process.argv[5];
         switch (language){
             case 'ru':
-                fs.writeFileSync(outFile, Decrypt(message, LowerRusAlph).decryptedMessage);
+                trainFile = fs.readFileSync('RuTrainingSample.txt', 'utf8');
+                let obj = Decrypt(message, LowerRusAlph);
+                console.log(obj.shift)
+                fs.writeFileSync(outFile, obj.decryptedMessage);
                 break;
             case 'en':
-                fs.writeFileSync(outFile, Decrypt(message, LowerEngAlph).decryptedMessage);
+                trainFile = fs.readFileSync('EnTrainingSample.txt', 'utf8');
+                let result = Decrypt(message, LowerEngAlph);
+                console.log(result.shift)
+                fs.writeFileSync(outFile, result.decryptedMessage);
                 break;
             default:
                 console.log('wrong lang');
@@ -51,18 +57,10 @@ switch (mode){
         break;
 }
 
-// let inFile = 'input.txt';
-// let outFile = 'output.txt';
-// let trainFile = fs.readFileSync('trainingSample.txt', 'utf8')
-// let message = fs.readFileSync(inFile, 'utf8');
-// d=Encrypt(message, LowerEngAlph, 6);
-// fs.writeFileSync(outFile, d)
-// message = fs.readFileSync('output.txt', 'utf8');
-// Decrypt(message, LowerEngAlph);
-
 function Encrypt(message, lowerAlph, shift) {
     let outStr = "";
     let upperAlph = lowerAlph.toUpperCase();
+    shift=shift % lowerAlph.length;
     for (let i = 0; i < message.length; i++) {
         ch = message[i];
         if (lowerAlph.includes(ch)) {
@@ -79,7 +77,37 @@ function Encrypt(message, lowerAlph, shift) {
     return outStr;
 }
 
-function FindMostOftenLetter(map){
+function CalcShift(message, lowerAlph){
+
+    let alphFreqTable = CalcRelativeFreq(trainFile, lowerAlph);
+    let textFreqTable = CalcRelativeFreq(message, lowerAlph);
+    let matchTable = new Map();
+    let textKeys = textFreqTable.keys();
+
+    for (let k of textKeys){
+        let min = Infinity;
+        let alphKeys = alphFreqTable.keys();
+        let shift = 0;
+        for (let k1 of alphKeys){
+            let textSymb = textFreqTable.get(k);
+            let alphSymb = alphFreqTable.get(k1);
+            if (Math.abs(textSymb - alphSymb) < min){
+                min = Math.abs(textSymb - alphSymb);
+                shift = 
+                (lowerAlph.length + lowerAlph.indexOf(k) - lowerAlph.indexOf(k1)) % lowerAlph.length;
+            }
+        }
+        if (matchTable.has(shift)){
+            matchTable.set(shift, matchTable.get(shift)+1);
+        }
+        else {
+            matchTable.set(shift, 1);
+        }
+    }
+    return FindMostOftenKey(matchTable);
+}
+
+function FindMostOftenKey(map){
     let keys = map.keys();
     let max = 0;
     let maxKey = 0;
@@ -96,23 +124,15 @@ function FindMostOftenLetter(map){
 
 function Decrypt(message, lowerAlph) {
     let upperAlph = lowerAlph.toUpperCase();
-    let alphFreqTable = CalcRelativeFreq(trainFile, lowerAlph);
-    console.log(alphFreqTable);
-    let textFreqTable = CalcRelativeFreq(message, lowerAlph);
-    console.log(textFreqTable);
-    let alphMostFreqLetter = FindMostOftenLetter(alphFreqTable);
-    let textMostFreqLetter = FindMostOftenLetter(textFreqTable);
-    let shift = 
-        (lowerAlph.length + lowerAlph.indexOf(alphMostFreqLetter) 
-        - lowerAlph.indexOf(textMostFreqLetter)) % lowerAlph.length;    
+    let shift = CalcShift(message, lowerAlph)
     let decryptedMessage = "";
     for (let i=0; i < message.length; i++){
         let ch = message[i];
         if (lowerAlph.includes(ch)){
-            decryptedMessage+=lowerAlph[(lowerAlph.indexOf(ch) + shift) % lowerAlph.length];
+            decryptedMessage += lowerAlph[(lowerAlph.length + lowerAlph.indexOf(ch) - shift) % lowerAlph.length];
         }
         else if (upperAlph.includes(ch)){
-            decryptedMessage+=upperAlph[(upperAlph.indexOf(ch) + shift) % lowerAlph.length]
+            decryptedMessage += upperAlph[(lowerAlph.length + upperAlph.indexOf(ch) - shift) % upperAlph.length];
         }
         else {
             decryptedMessage+=ch;
@@ -129,7 +149,7 @@ function CalcRelativeFreq(str, lowerAlph) {
     let lettersCount = 0;
     let upperAlph = lowerAlph.toUpperCase();
     for (let i = 0; i < str.length; i++) {
-        ch=str[i];
+        let ch=str[i];
         if (upperAlph.includes(ch) || lowerAlph.includes(ch)){
             ch=ch.toLowerCase();
             lettersCount++;

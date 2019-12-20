@@ -1,15 +1,19 @@
+body {
+  background: radial-gradient(circle, rgba(0,0,0,1) 66%, rgba(255,255,255,1) 100%);;
+}
 div {margin-bottom: 10px}
 div.game {
-background: #ECE9E0;
+background: rgb(41, 41, 41);
 border-radius: 20px;
-border: 16px solid #ECE9E0;
+border: 16px solid rgb(0, 0, 0);
 }
 table {
 border-spacing: 1px;
 color: #656665;
-width: 100%;
+width: 50%;
 height: 100%;
-align-self: auto;
+align-self: center;
+margin: auto;
 }
 td {
 position: relative;
@@ -39,14 +43,14 @@ right: 0px;
 cursor: pointer;
 }
 td div.alive {
-background: rgb(64, 238, 64);
+background: rgb(19, 255, 19);
 }
 input {
  width: 70px;
 }
 input[type=button] {
- background: linear-gradient(to bottom, #fff 0%,#4F5566 100%);
- color: #fff;
+ background: linear-gradient(to bottom, #fff 0%,rgb(255, 255, 255) 100%);
+ color: rgb(0, 0, 0);
  font-size: 16px;
  text-shadow: 0 1px 0 #757575;
  padding: 4px 0 5px 0;
@@ -60,3 +64,4 @@ input[type=button]:hover {
  background: linear-gradient(to bottom, #fff 0%,#000 100%);
 }
 input.wide {width: 146px;}
+

@@ -2,13 +2,14 @@ let intervalID;
 
 let Field = new Array();
 
-class cell {
+class Cell {
 	isAlive = false;
 	x = 0;
 	y = 0;
-	constructor(X, Y) {
+	constructor(X, Y, IsAlive) {
 		this.x = X;
 		this.y = Y;
+		this.isAlive = (IsAlive === undefined) ? false: IsAlive;
 	}
 }
 
@@ -34,10 +35,10 @@ function drawCell(cell) {
 	return '<td><div' + cl + ' x=' + cell.x + ' y=' + cell.y + ' onclick="changeCell(this);">&nbsp;</div></td>';
 }
 
-function newWorld() {
+function newWorld(isRandom) {
 	var heig = parseInt(document.getElementById("heig").value);
 	var widt = parseInt(document.getElementById("widt").value);
-	initGeneration(heig, widt);
+	initGeneration(heig, widt, isRandom);
 	refreshWorld();
 }
 
@@ -47,14 +48,14 @@ function refreshWorld() {
 }
 
 function next() {
-	let old = Field;
-	Field = GetNextGeneration(old);
+	Field = GetNextGeneration(Field);
 	refreshWorld();
 }
 
 function go() {
 	stop();
 	intervalID = setInterval('next()', 100);
+
 }
 
 function stop() {
@@ -63,6 +64,7 @@ function stop() {
 
 function random() {
 	stop();
+	newWorld(true);
 }
 
 function changeCell(elem) {
@@ -70,12 +72,15 @@ function changeCell(elem) {
 	refreshWorld();
 }
 
-function initGeneration(heig, widt) {
+function initGeneration(heig, widt, isRandom) {
 	Field = new Array(heig);
 	for (let i = 0; i < heig; i++) {
 		Field[i] = new Array(widt);
 		for (let j = 0; j < widt; j++) {
-			Field[i][j] = new cell(j, i);
+			if (isRandom)
+				Field[i][j] = new Cell(j, i, Boolean(Math.round(Math.random())));
+			else 
+				Field[i][j] = new Cell(j, i);
 		}
 	}
 }

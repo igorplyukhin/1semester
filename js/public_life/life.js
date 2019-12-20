@@ -18,27 +18,23 @@ function GetNextGeneration(field) {
     return newField;
 }
 
-function ProceedCell(cell, field){
-    let x = cell.x;
-    let y = cell.y;
+function ProceedCell(oldCell, field){
+    let cell = new Cell(oldCell.x, oldCell.y)
     let aliveNeighCount = 0;
     for (let dir of Directions) {
-        let xNeigh = SetCoordinates(x, dir[0], field[0].length);
-        let yNeigh = SetCoordinates(y, dir[1], field.length);
+        let xNeigh = SetCoordinates(oldCell.x, dir[0], field[0].length);
+        let yNeigh = SetCoordinates(oldCell.y, dir[1], field.length);
         if (field[yNeigh][xNeigh].isAlive)
             aliveNeighCount++;
     }
 
-    if (cell.isAlive)  {
-        console.log('alive');
-        if (aliveNeighCount < 2 || aliveNeighCount > 3)
-            cell.isAlive = false;
-    }
-    else{
-        console.log('dead');
-        if (aliveNeighCount === 3)
+    if (oldCell.isAlive)  {
+        if (aliveNeighCount === 2 || aliveNeighCount === 3)
             cell.isAlive = true;
     }
+    else if (aliveNeighCount === 3)
+            cell.isAlive = true;
+
     return cell;
 }
 
@@ -47,6 +43,6 @@ function SetCoordinates(oldX, deltaX, border){
     if (x < 0)
         return border - 1;
     else if (x >= border)
-        return 0;;
+        return 0;
     return x;
 }

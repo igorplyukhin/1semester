@@ -2,10 +2,12 @@
 const fs = require('fs');
 let strFile = process.argv[process.argv.length - 2];
 let substrFile = process.argv[process.argv.length - 1];
+
 if (!fs.existsSync(strFile) || !fs.existsSync(substrFile)) {
     console.log("File doesn't exist");
     return;
 }
+
 let str = fs.readFileSync(strFile, 'utf8');
 let substr = fs.readFileSync(substrFile, 'utf8');
 let method = process.argv[process.argv.length - 3];
@@ -14,6 +16,7 @@ let showTime = false;
 let count = 0;
 let keys = process.argv.slice(2, -3);
 let result;
+
 for (let i = 0; i < keys.length; i++) {
     switch (keys[i]) {
         case "-c":
@@ -35,11 +38,11 @@ switch (method) {
         console.log("Bruteforce method:");
         break;
     case "h1":
-        result = HashFindSubstrIndices(str, substr, GetSumHash, 1, count);
+        result = HashFindSubstrIndices(str, substr, CalcSumHash, 1, count);
         console.log("Hashsum method:");
         break;
     case "h2":
-        result = HashFindSubstrIndices(str, substr, GetSumHash, 2, count);
+        result = HashFindSubstrIndices(str, substr, CalcSumHash, 2, count);
         console.log("SquareHashsum method:");
         break;
     case "h3":
@@ -47,14 +50,18 @@ switch (method) {
         console.log("RabinCarp mehod:");
         break;
     default:
-        console.log(`Uncknown modifier \'${method}\'`);
+        console.log(`Unknown modifier \'${method}\'`);
         return;
 }
+
 if (showTime)
     console.timeEnd('Elapsed time');
+
 console.log(result.indices.join());
+
 if (showCollisions && method != "b")
-    console.log("Collisions:", data.collisions);
+    console.log("Collisions:", result.collisions);
+
 
 function BruteForceFindSubstrIndices(str, substr, count) {
     let indices = new Array();
@@ -67,7 +74,7 @@ function BruteForceFindSubstrIndices(str, substr, count) {
         }
         indices.push(i);
         if (indices.length == count && count > 0)
-                break;
+            break;
     }
     return {
         indices
@@ -92,24 +99,27 @@ function HashFindSubstrIndices(str, substr, Method, power, count) {
             if (indices.length == count && count > 0)
                 break;
         }
-        currentHash =
-            Method === CalcRabinKarpHash
+
+        if (i + substr.length !== str.length) {
+            currentHash = Method === CalcRabinKarpHash
                 ? UpdRabinKarpHash(str, substr, currentHash, i)
-                : UpdSumHash(str[i], str[i+1], power, currentHash);
+                : UpdSumHash(str[i], str[i + substr.length], power, currentHash);
+        }
     }
+
     return {
         indices,
         collisions
     };
 }
 
-function UpdSumHash(symbol,nextSymbol, power, sum){
-    sum-=Math.pow(symbol.charCodeAt(),power);
-    sum+=Math.pow(nextSymbol.charCodeAt(),power);
+function UpdSumHash(prevSymbol, nextSymbol, power, sum) {
+    sum -= Math.pow(prevSymbol.charCodeAt(), power);
+    sum += Math.pow(nextSymbol.charCodeAt(), power);
     return sum;
 }
 
-function GetSumHash(str, power) {
+function CalcSumHash(str, power) {
     let hashSum = 0;
     for (let i = 0; i < str.length; i++) {
         hashSum += Math.pow(str[i].charCodeAt(), power);
@@ -126,8 +136,6 @@ function CalcRabinKarpHash(str) {
 }
 
 function UpdRabinKarpHash(str, substr, currentHash, i) {
-    return i + substr.length === str.length
-        ? currentHash
-        : 2 * (currentHash - str[i].charCodeAt() * Math.pow(2, substr.length - 1))
-            + str[i + substr.length].charCodeAt();
+    return 2 * (currentHash - str[i].charCodeAt() * Math.pow(2, substr.length - 1))
+        + str[i + substr.length].charCodeAt();
 }

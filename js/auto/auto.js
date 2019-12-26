@@ -4,15 +4,13 @@ const fs = require("fs");
 let strFile = process.argv[process.argv.length - 2];
 let substrFile = process.argv[process.argv.length - 1];
 let keys = process.argv.slice(2,-2);
-let showTime = false;
-let showTable = false;
-let indicesCount = 0;
-
 if (!fs.existsSync(strFile) || !fs.existsSync(substrFile)) {
     console.log("Check files");
     return;
 }
-
+let showTime = false;
+let showTable = false;
+let indicesCount = 0;
 for (let i=0; i < keys.length; i++) {
     switch (keys[i]){
         case "-t":
@@ -33,6 +31,10 @@ console.time("Elapsed time");
 let indicesAndTable = FindSubstrings(str,substr);
 if (showTime)
     console.timeEnd("Elapsed time");
+
+if (indicesCount > 0)
+    indicesAndTable.indices = indicesAndTable.indices.slice(0,indicesCount);
+
 console.log(indicesAndTable.indices.join());
 if (showTable)
     console.log(indicesAndTable.table);
@@ -71,8 +73,6 @@ function FindSubstrings(str, substr) {
             : table[currentState][str[i]];
         if (currentState === substr.length)
             indices.push(i - substr.length + 1)
-        if (indices.length === indicesCount && indicesCount > 0)
-            break;
     }
 
     return {

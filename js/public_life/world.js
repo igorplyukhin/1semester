@@ -78,7 +78,7 @@ function initGeneration(heig, widt, isRandom) {
 		Field[i] = new Array(widt);
 		for (let j = 0; j < widt; j++) {
 			if (isRandom)
-				Field[i][j] = new Cell(j, i, Boolean(Math.round(Math.random())));
+				Field[i][j] = new Cell(j, i, Boolean(Math.round(Math.random() - 0.25)));
 			else 
 				Field[i][j] = new Cell(j, i);
 		}
@@ -87,4 +87,11 @@ function initGeneration(heig, widt, isRandom) {
 
 function changeGeneration(x, y) {
 	Field[y][x].isAlive = !Field[y][x].isAlive;
+}
+
+function CheckChar(id)
+{
+    var str=document.getElementById(id);
+    var regex=/[^0-9]/gi;
+    str.value=str.value.replace(regex ,"");
 }

@@ -51,6 +51,7 @@ namespace StructBenchmarking
             strLength = len;
         }
         
+        [MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
         public void Run()
         {
             new string('0',strLength);

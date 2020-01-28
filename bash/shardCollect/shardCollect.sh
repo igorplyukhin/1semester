@@ -14,7 +14,7 @@ if ! [[ -d $dir ]]; then
     exit 1;
 fi
 
-openedFiles=$(lsof +D "$dir" | awk ' $1!="NAME " {print $9":"}')
+openedFiles=$(lsof +D "$dir" | awk ' $1!="COMMAND" {print ":"$9":"} ')
 emptyFolderExist=0
 
 shopt -s globstar nullglob
@@ -26,14 +26,11 @@ do
     fi
 
     for file in "$folder"/**
-    do
-        if ! [[ -f $file ]]; then
-            continue
-        fi
-        
-        if echo "$openedFiles" | grep -q "$file" 
+    do      
+        if echo "$openedFiles" | grep -q ":$file:"
         then
             count=1
+	        break
         fi
     done
 

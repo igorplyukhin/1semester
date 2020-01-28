@@ -7,7 +7,7 @@ case "$1" in
         exit 1;;
 esac
 
-if [[ $1 != *.txt ]]; then
+if [[ $1 != *.txt || ! -f $1 ]]; then
 echo "expected .txt file"
 exit 1
 fi

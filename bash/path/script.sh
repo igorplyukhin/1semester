@@ -6,8 +6,7 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     exit 0;
 fi
 
-if [ "$1" ];
-then
+if [[ "$1" && -d $1 ]]; then
     dir=$1
 else 
     dir=$PATH
@@ -15,6 +14,7 @@ fi
 
 emptyFoldersCount=0
 newPath=""
+pathWithSplitters=""
 IFS=:
 
 for folder in $dir
@@ -22,19 +22,19 @@ do
     k=0 
     for file in "$folder"/*
     do
-    if [ -x "$file" ] && [ -f "$file" ]
-    then    
-        k=1
+    	if [ -x "$file" ] && [ -f "$file" ]
+    	then    
+        	k=1
         break
-    fi
+    	fi
     done
-
-    if [ $k -eq 1 ] && [[ $newPath != *"$folder"* ]]; then
-    newPath="$newPath\n$folder"
+    if [[ $k -eq 1 && $pathWithSplitters != *":$folder:"* ]];   then
+    	pathWithSplitters="$pathWithSplitters:$folder:"
+	newPath="$newPath\n$folder"
     else
-    emptyFoldersCount=$((emptyFoldersCount+1))
+    	emptyFoldersCount=$((emptyFoldersCount+1))
     fi
 done
 
 echo -e "$newPath"
-echo "$emptyFoldersCount Folders aren't shown"
+

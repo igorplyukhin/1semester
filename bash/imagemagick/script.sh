@@ -12,23 +12,39 @@ if [ $# -lt 3 ] || [ $# -gt 5 ]
     exit 1;
 fi
 
+if [[ ! -d $1 ]]; then
+	echo "input dir doesn\`t exist"
+	exit 1;
+fi
+
+if [[ ! -d $3 ]]; then
+	mkdir $3
+fi
+
+if ! [[ -w $3 && -x $3 ]]; then    
+   echo "access to output folder denied"
+   exit 1;
+fi
+
 inputdir=$1
 text=$2
 outputdir=$3
-if [[ -z $4 ]]; then
-    fontSize=55
-    else 
+
+if [[ -n $4 && "$4" =~ ^[0-9]+$ ]]; then
     fontSize=$4
+else 
+    fontSize=55
 fi
 
-if [[ -z $5 ]]; then
+if [[ -n $5 ]]; then
+    fontName=$5
+else 
     fontName='Waree-Oblique'
-    else 
-    fontSize=$5
+    
 fi
 
 suffics="_annotated"
-f=$(find "$inputdir" -name \*jpg)
+f=$(find "$inputdir" -name \*.jpg)
 for file in $f
 do
     filename=$(basename "$file")

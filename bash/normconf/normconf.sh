@@ -1,5 +1,22 @@
-#!/bin/bash
+#/bin/bash
+case "$1" in                                                                                                          
+        "-h"|"--help") 
+        echo -e "Script makes your config normal\n1st arg should be config file name"
+        exit 0;;
+        "") echo "no file spicified"
+        exit 1;;
+esac
+
 filename=$1
+if [[ ! -f $1 ]]; then
+	echo "file does not exist"
+	exit 1;
+fi
+if [[ ! -r $1 ]]; then
+    echo "read access denied"
+    exit 1;
+fi
+
 fileContent=$(cat "$filename")
 
 declare -A unitsValues=( ['s']=1 ['min']=60 ['h']=3600 ['d']=24*3600 ['mm']=0.001 ['sm']=0.01 

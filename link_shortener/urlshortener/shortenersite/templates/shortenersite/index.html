@@ -17,7 +17,18 @@
     </div>
     <div class="panel-footer">
         <span id="url-result">Enter the URL above and click submit!</span>
-        <button id="copyButton" class="btn btn-primary">Copy</button>
+        <button id="copyButton" class="btn btn-primary" onclick="myFunction()">Copy</button>
     </div>
 </div>
+<script type="text/javascript">
+    function myFunction() {
+        var copyText = document.getElementById("url-result");
+        var textArea = document.createElement("textarea");
+        textArea.value = copyText.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("Copy");
+        textArea.remove();
+    }
+</script>
 {% endblock %}
